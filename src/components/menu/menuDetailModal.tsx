@@ -1,26 +1,32 @@
+import { Modal } from 'antd';
+import Image from 'next/image';
 import React from 'react';
 
-const MenuDetailModal: React.FC<any> = ({ order }) => {
-  // Kiểm tra nếu không có dữ liệu đơn hàng
-  if (!order) {
-    return <div>Không có thông tin đơn hàng</div>;
-  }
+const MenuDetailModal: React.FC<{
+  isModalOpen: boolean;
+  handleCancel: () => void;
+  handleOk: () => void;
+}> = ({ isModalOpen, handleCancel, handleOk }) => {
 
   return (
-    <div className="order-details">
-      <h2>Chi Tiết Đơn Hàng</h2>
-      <p><strong>Mã đơn hàng:</strong> {order.id}</p>
-      <p><strong>Ngày đặt:</strong> {new Date(order.date).toLocaleDateString()}</p>
-      <p><strong>Trạng thái:</strong> {order.status}</p>
+    <>
+      <Modal title="Chi tiết món ăn" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <div className='flex justify-between mt-5'>
+          <div className="order-details">
+            <p className='mb-3'><strong>Mã: </strong> 1</p>
+            <p className='mb-3'><strong>Tên món: </strong> Bánh rán</p>
+            <p className='mb-3'><strong>Miêu tả: </strong> Món ăn số 1 Việt Nam</p>
+            <p className='mb-3'><strong>Loại món: </strong> Món tráng miệng</p>
+            <p className='mb-3'><strong>Trạng thái: </strong> Hiển thị</p>
+            <p className='mb-3'><strong>Thời gian cập nhật: </strong> 14/11/2024 </p>
+          </div>
+          <div className='flex flex-col items-center text-center'>
+            <p><strong>Ảnh:</strong> <Image src="https://mquickb.s3.amazonaws.com/d4d7a80b-4c5f-41ae-a36a-71af571e88ea.jpg" alt="" width={120} height={120} /></p>
+          </div>
+        </div>
+      </Modal>
+    </>
 
-      <h3>Thông tin khách hàng</h3>
-      <p><strong>Tên:</strong> {order.customer.name}</p>
-      <p><strong>Email:</strong> {order.customer.email}</p>
-      <p><strong>Số điện thoại:</strong> {order.customer.phone}</p>
-
-      <h3>Tổng cộng</h3>
-      <p><strong>Tổng tiền:</strong> {order.total} VND</p>
-    </div>
   );
 };
 

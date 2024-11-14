@@ -101,107 +101,107 @@
     display: none;
   }
   
-  @media (max-width: 1023px) {
-    .sideBar {
-      display: none !important;
-    }
+  // @media (max-width: 1023px) {
+  //   .sideBar {
+  //     display: none !important;
+  //   }
   
-    .hover-item-menu {
-      border-radius: 8px;
-      min-height: 52px;
-      margin: 0;
-    }
+  //   .hover-item-menu {
+  //     border-radius: 8px;
+  //     min-height: 52px;
+  //     margin: 0;
+  //   }
   
-    .sideBarResponsive {
-      display: flex;
-      align-items: center;
-      width: 100vw;
-      position: fixed;
-      bottom: 0;
-      height: 64px;
-      z-index: 10;
+  //   .sideBarResponsive {
+  //     display: flex;
+  //     align-items: center;
+  //     width: 100vw;
+  //     position: fixed;
+  //     bottom: 0;
+  //     height: 64px;
+  //     z-index: 10;
   
-      .hover-item-menu {
-        min-height: 50px;
-      }
+  //     .hover-item-menu {
+  //       min-height: 50px;
+  //     }
   
-      ul {
-        display: flex;
-        padding: 8px 0 0 0;
-        flex: 1;
-        margin-bottom: 0px;
-        margin: 0 6px;
+  //     ul {
+  //       display: flex;
+  //       padding: 8px 0 0 0;
+  //       flex: 1;
+  //       margin-bottom: 0px;
+  //       margin: 0 6px;
         
-        li {
-          min-width: 70px;
+  //       li {
+  //         min-width: 70px;
   
-          .sidebar-item-icon {
-            background-position: center center;
-            background-size: 24px 24px;
-            background-repeat: no-repeat;
-            width: 24px !important;
-            height: 24px !important;
+  //         .sidebar-item-icon {
+  //           background-position: center center;
+  //           background-size: 24px 24px;
+  //           background-repeat: no-repeat;
+  //           width: 24px !important;
+  //           height: 24px !important;
   
-            &.icon-home {
-              background-image: url('/icon/home.svg');
-            }
+  //           &.icon-home {
+  //             background-image: url('/icon/home.svg');
+  //           }
   
-            &.icon-chat {
-              background-image: url('/icon/chat.svg');
-            }
+  //           &.icon-chat {
+  //             background-image: url('/icon/chat.svg');
+  //           }
   
-            &.icon-user {
-              background-image: url('/icon/user.svg');
-            }
+  //           &.icon-user {
+  //             background-image: url('/icon/user.svg');
+  //           }
   
-            &.icon-doc {
-              background-image: url('/icon/doc.svg');
-            }
+  //           &.icon-doc {
+  //             background-image: url('/icon/doc.svg');
+  //           }
   
-            &.icon-company {
-              background-image: url('/icon/company.svg');
-            }
+  //           &.icon-company {
+  //             background-image: url('/icon/company.svg');
+  //           }
   
-            &.icon-assistant-menu {
-              background-image: url('/icon/icon-assistant-menu.svg');
-            }
+  //           &.icon-assistant-menu {
+  //             background-image: url('/icon/icon-assistant-menu.svg');
+  //           }
   
-            &.icon-model {
-              background-image: url('/icon/model.svg');
-            }
-          }
-        }
-      }
-    }
-  }
+  //           &.icon-model {
+  //             background-image: url('/icon/model.svg');
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   
-  @media (max-width: 590px) {
-    .sideBarResponsive {
-      ul {
-        display: flex;
-        align-items: center;
-        padding: 0;
+  // @media (max-width: 590px) {
+  //   .sideBarResponsive {
+  //     ul {
+  //       display: flex;
+  //       align-items: center;
+  //       padding: 0;
   
-        li {
-          margin: 0;
-          height: 70px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 40px;
+  //       li {
+  //         margin: 0;
+  //         height: 70px;
+  //         display: flex;
+  //         align-items: center;
+  //         justify-content: center;
+  //         min-width: 40px;
   
-          a {
-            width: 90%;
-          }
+  //         a {
+  //           width: 90%;
+  //         }
   
-          .sidebar-item-title {
-            display: none;
-          }
-        }
+  //         .sidebar-item-title {
+  //           display: none;
+  //         }
+  //       }
   
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
   
   .outlineDropdownItem {
     display: flex;

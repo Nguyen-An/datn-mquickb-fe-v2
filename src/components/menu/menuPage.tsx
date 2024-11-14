@@ -1,10 +1,15 @@
 "use client";
-import { Input, Pagination, Tooltip } from 'antd';
+import { Input, Modal, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import "@/style/page.scss"
 import icon from '@/../public/icons/index';
 import MenuDetailModal from './menuDetailModal';
+import MenuFormModal from './menuFormModal';
+import { DataFrom } from '@/lib/interface';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 const MenuPage = () => {
     const srcIconDelete = icon['iconDelete']
@@ -13,6 +18,10 @@ const MenuPage = () => {
 
     const [isShowDetail, setIsShowDetail] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
+    const [dataFrom, setDataFrom] = useState<DataFrom>({
+        mode: "detail",
+        data: {}
+    })
 
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPage, setTotalPage] = useState(100)
@@ -21,13 +30,49 @@ const MenuPage = () => {
         // await getList(page, keyword, categorySelect);
         setCurrentPage(page);
     }
-    
-    const log = () => {
-        setIsShowDetail(true)
-        console.log(123123);
-        
-    } 
-    
+
+    const handleShowForm = (mode: string, id: any) => {
+        setIsShowForm(true)
+
+        const data: DataFrom = {
+            mode: mode,
+            data: {
+                id: id
+            }
+        }
+
+        setDataFrom(data)
+    }
+
+    const handleCancelModalDetail = () => {
+        setIsShowDetail(false)
+    }
+
+    const handleOkModalDetail = () => {
+        setIsShowDetail(false)
+    }
+    const handleCancelForm = () => {
+        setIsShowForm(false)
+    }
+
+    const showDeleteConfirm = () => {
+        confirm({
+            title: 'Bạn có chắc chắn muốn xóa món ăn này',
+            icon: <ExclamationCircleFilled />,
+            content: '',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            centered: true,
+            onOk() {
+                console.log('OK');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
     return (
         <>
             <div className='px-8 py-6'>
@@ -35,7 +80,7 @@ const MenuPage = () => {
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
                         <div><Input placeholder="Basic usage" /></div>
-                        <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2'>Thêm mới</button></div>
+                        <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowForm("create", null) }}>Thêm mới</button></div>
                     </div>
                     <div className='app-table-outline'>
                         <table className="app-table">
@@ -62,13 +107,13 @@ const MenuPage = () => {
                                     <td className="bg-no-scroll" style={{ width: "170px" }}>
                                         <div className="flex justify-between">
                                             <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
+                                                <button onClick={() => { setIsShowDetail(true) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                             <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
+                                                <button onClick={() => { handleShowForm("edit", 1) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                             <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
+                                                <button onClick={() => { showDeleteConfirm() }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                         </div>
                                     </td>
@@ -150,15 +195,15 @@ const MenuPage = () => {
                                     <td className="bg-no-scroll" style={{ width: "170px" }}>
                                         <div className="flex justify-between">
                                             <Tooltip title={"detail"}>
-                                                <button onClick={() => {log()}}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
+                                                <button onClick={() => { () => { setIsShowDetail(true) } }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                             <Tooltip title={"edit"}>
                                                 {/* <button onClick={()=> setIsShowForm(true)}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40}/></button> */}
-                                                <button ><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40}/></button>
+                                                <button ><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                             <Tooltip title={"delete"}>
                                                 {/* <button onClick={()=> setIsShowForm(true)}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40}/></button> */}
-                                                <button ><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40}/></button>
+                                                <button ><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                             </Tooltip>
                                         </div>
                                     </td>
@@ -166,14 +211,13 @@ const MenuPage = () => {
                             </tbody>
                         </table>
                     </div>
-                        <div className="mt-5 flex justify-center">
-                            <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                    <div className="mt-5 flex justify-center">
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
                     </div>
-                    {isShowDetail ? (<MenuDetailModal></MenuDetailModal>) : null} 
+                    {isShowDetail ? (<MenuDetailModal isModalOpen={isShowDetail} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></MenuDetailModal>) : null}
+                    {isShowForm ? (<MenuFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></MenuFormModal>) : null}
                 </div>
             </div>
-
-
         </>
 
     );

@@ -4,6 +4,7 @@ import  './sidebar.scss';
 import { usePathname, useRouter } from "next/navigation";
 import SideBarItem from "./sideBarItem";
 import { FileAddOutlined, FormOutlined, HomeOutlined, MenuOutlined, TableOutlined, UserOutlined, WechatWorkOutlined } from "@ant-design/icons";
+import Avatar from "../avatar/avatar";
 
 interface MenuItem {
   icon: any;
@@ -128,7 +129,7 @@ const SideBar = () => {
               ></SideBarItem>)
           )}
         </ul>
-        {/* <Avatar size={58} /> */}
+        <Avatar size={58} />
       </div>
     </>
   );
