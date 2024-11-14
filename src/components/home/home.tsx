@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import icon from '@/../public/icons/index';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
+import ModalLogin from '../login/modalLogin';
 
 const Home = () => {
   const router = useRouter()
@@ -14,9 +15,18 @@ const Home = () => {
   const srcIconlogo = icon['iconlogo']
   const srcIconArrowRight = icon['iconArrowRight']
 
-  const handleClick = () => {
-    router.push('/chat')
+  const [isopenModalLogin, setIsopenModalLogin] = useState<boolean>(false);
+  const [typeLogin, setTypeLogin] = useState<string>("customerQR");
+
+  const handleShowFormLogin = (type: string) => {
+    setTypeLogin(type)
+    setIsopenModalLogin(true)
+    // router.push('/chat')
   }
+
+  const handleCloseModalLogin = () => {
+    setIsopenModalLogin(false);
+  };
 
   return (
     <>
@@ -25,7 +35,7 @@ const Home = () => {
           <div className='w-[90vw] h-[90px] bg-[#fbfbff] rounded-[50px] py-[10px] px-8 flex justify-between'>
             <Image src={srcIconlogo} alt="" className='rounded-[10px]' width={70} height={70} />
             <div className='h-full flex items-center'>
-              <div className='flex bg-[#f1553a] py-3 px-8 rounded-[50px] text-[#fff] text-[20px] pacifico-regular cursor-pointer' onClick={() => {handleClick()}}>
+              <div className='flex bg-[#f1553a] py-3 px-8 rounded-[50px] text-[#fff] text-[20px] pacifico-regular cursor-pointer' onClick={() => {handleShowFormLogin("user")}}>
                 Bắt đầu <Image src={srcIconArrowRight} alt="" className='ml-2' width={20} height={20} />
               </div>
             </div>
@@ -34,8 +44,8 @@ const Home = () => {
         <div className='w-full text-center absolute bottom-[190px] z-1'>
           <div className='pacifico-regular text-[#fff] text-[30px]'>RESTAURANT <br /> MQuickB</div>
           <div className='flex justify-center mt-2 pacifico-regular'>
-            <div className='bg-[#fdf5f5] rounded-s-[50px] text-[20px] px-4 py-2 cursor-pointer '>Chat with bot</div>
-            <div className='bg-[#FF4500] rounded-e-[50px] text-[20px] px-4 py-2 cursor-pointer'>Đăng nhập</div>
+            <div className='bg-[#fdf5f5] rounded-s-[50px] text-[20px] px-4 py-2 cursor-pointer ' onClick={() => {handleShowFormLogin("customerQR")}}>Chat with bot</div>
+            <div className='bg-[#FF4500] rounded-e-[50px] text-[20px] px-4 py-2 cursor-pointer' onClick={() => {handleShowFormLogin("user")}}>Đăng nhập</div>
           </div>
         </div>
       </div>
@@ -85,8 +95,8 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <ModalLogin isopen={isopenModalLogin} typeLogin={typeLogin} onCancel={handleCloseModalLogin}></ModalLogin>
     </>
-
   );
 };
 

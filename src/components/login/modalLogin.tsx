@@ -1,44 +1,53 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, Button, notification } from 'antd';
+import { Modal, Form, Input, Button, notification, Tabs, TabsProps } from 'antd';
 import Image from 'next/image';
 
 // Định nghĩa interface cho props
+// 'customerQR' | 'user'
 interface UserFormProps {
     isopen: boolean;
-    type: 'user' | 'admin';
-    userId?: string | number;
-    onCancel: (nextRouter: boolean) => void;
-    nextRouter: boolean;
+    typeLogin: string;
+    onCancel: () => void;
 }
 
 const ModalLogin = ({
-    nextRouter,
     isopen,
-    type,
-    userId, // userId for change password by admin
+    typeLogin,
     onCancel
 }: UserFormProps) => {
 
-    const handleFormChangePasswordValuesChange = () => {
-
-    };
 
     const handleOk = () => {
 
     };
 
-    const changePassword = async (values: any) => {
+    const onChange = (key: string) => {
+        console.log(key);
+    };
 
-    }
+    const items: TabsProps['items'] = [
+        {
+            key: 'customerQR',
+            label: 'Đăng nhập với tư khách khách',
+            children: 'Content of Tab Pane 1',
+        },
+        {
+            key: 'user',
+            label: 'Đăng nhập với account',
+            children: 'Content of Tab Pane 2',
+        }
+    ];
 
-    const adminChangePassword = async (values: any) => {
-
+    const loginCustomerQR = (type: string) => {
+        return (<>
+        
+        </>)
     }
 
     return (
         <>
-            <Modal centered open={isopen} onOk={handleOk} onCancel={() => onCancel(nextRouter)} footer={null} width={704}>
-                ChangePasswordForm
+            <Modal centered open={isopen} onOk={handleOk} onCancel={() => onCancel()} width={700}>
+                <Tabs defaultActiveKey="customerQR" items={items} onChange={onChange} />
             </Modal>
         </>
     );
