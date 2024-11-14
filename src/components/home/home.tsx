@@ -22,7 +22,7 @@ const Home = () => {
     <>
       <div className='bg-landing-page h-[90vh] bg-cover bg-center bg-no-repeat relative'>
         <div className='w-full flex justify-center absolute top-[0] mt-8'>
-          <div className='w-[90vw] h-[90px] bg-[#fffbfb] rounded-[50px] py-[10px] px-8 flex justify-between'>
+          <div className='w-[90vw] h-[90px] bg-[#fbfbff] rounded-[50px] py-[10px] px-8 flex justify-between'>
             <Image src={srcIconlogo} alt="" className='rounded-[10px]' width={70} height={70} />
             <div className='h-full flex items-center'>
               <div className='flex bg-[#f1553a] py-3 px-8 rounded-[50px] text-[#fff] text-[20px] pacifico-regular cursor-pointer' onClick={() => {handleClick()}}>

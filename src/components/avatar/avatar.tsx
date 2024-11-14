@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import ProfileForm, { UserFormData } from './ProfileForm';
-import ChangePasswordForm from './changePasswordForm';
+import ChangePasswordForm from './ChangePasswordForm';
 
 export default function Avatar({ size }: { size: number }) {
     const srcIconViewProfile = icon['iconViewProfile']
@@ -23,7 +23,7 @@ export default function Avatar({ size }: { size: number }) {
         typeForm: 'view',
         data: null
     });
-    const router = useRouter();
+    const router = useRouter()
 
     useEffect(() => {
         const token = localStorage?.getItem("token");
@@ -63,7 +63,9 @@ export default function Avatar({ size }: { size: number }) {
     const handleSave = () => {
     };
     const handleSignOut = () => {
+        console.log(123123);
         
+        router.push('/')
     }
 
     const handleCancel = () => {
