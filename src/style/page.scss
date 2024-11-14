@@ -1,0 +1,79 @@
+.app-screen {
+    background-color: #fff;
+    height: calc(100vh - 160px);
+    border-radius: 16px;
+    padding: 20px 12px;
+
+    .app-table-outline {
+        max-height: calc(100vh - 324px);
+        overflow-y: auto;
+
+        .app-table {
+            width: 100%;
+            border-collapse: collapse;
+            /* Tốt hơn cho bảng có viền */
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            /* Đảm bảo thead sẽ luôn ở trên */
+            height: 40px;
+
+            tr {
+                th {
+                    background-color: #4169E1;
+                    color: #fff;
+                    font-weight: 400;
+                    font-size: 16px;
+                }
+
+                th:first-child {
+                    border-radius: 4px 0 0 4px;
+                }
+
+                th:last-child {
+                    border-radius: 0 4px 4px 0;
+                }
+            }
+        }
+
+        th {}
+
+        tbody {
+            tr {
+                td {
+                    font-weight: 400;
+                    font-size: 15px;
+
+                    div{
+                        max-height: 120px;
+                    }
+
+                }
+            }
+        }
+
+        td {}
+    }
+}
+
+/* Thêm các kiểu thanh cuộn mỏng */
+::-webkit-scrollbar {
+    width: 6px;
+    /* Chiều rộng thanh cuộn dọc */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Màu sắc của thanh cuộn */
+    border-radius: 10px;
+    /* Bo tròn các cạnh của thanh cuộn */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Màu nền của khu vực thanh cuộn */
+    border-radius: 10px;
+}
