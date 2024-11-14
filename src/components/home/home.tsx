@@ -95,7 +95,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <ModalLogin isopen={isopenModalLogin} typeLogin={typeLogin} onCancel={handleCloseModalLogin}></ModalLogin>
+      {isopenModalLogin ? (<><ModalLogin isopen={isopenModalLogin} typeLogin={typeLogin} onCancel={handleCloseModalLogin}></ModalLogin></>) : null}
     </>
   );
 };
