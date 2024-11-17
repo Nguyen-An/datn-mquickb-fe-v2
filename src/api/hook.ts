@@ -4,8 +4,12 @@ const getAPIURL = (path: string) => {
     return `${process.env.API_URL || 'http://localhost:8000/'}${path}`;
 };
 
+// const instance = axios.create({
+//     baseURL: process.env.API_URL,
+// });
+
 const instance = axios.create({
-    baseURL: process.env.API_URL,
+    baseURL: 'http://localhost:8000/',
 });
 
 // Thay thế `any` bằng `unknown` hoặc các kiểu cụ thể hơn
@@ -13,8 +17,8 @@ const sendGet = (url: string, params?: Record<string, unknown>) => instance.get(
 
 const sendGetFile = (url: string, params?: Record<string, unknown>) => instance.get(url, { params, responseType: 'blob' });
 
-const sendPost = (url: string, params?: Record<string, unknown>, config?: AxiosRequestConfig) => {
-    return instance.post(url, params, config);
+const sendPost = (url: string, params?: Record<string, unknown>) => {
+    return instance.post(url, params);
 };
 
 const sendPut = (url: string, params: Record<string, unknown>) => instance.put(url, params);

@@ -3,6 +3,8 @@ import { Modal, Form, Input, Button, notification, Tabs, TabsProps, FormProps } 
 import Image from 'next/image';
 import icon from '@/../public/icons/index';
 import { useRouter } from 'next/navigation';
+import { signin } from '@/api/user';
+import { handleSaveUserInfo } from '@/constant';
 
 // Định nghĩa interface cho props
 // 'client' | 'user'
@@ -18,7 +20,7 @@ type FieldTypeUser = {
 };
 
 type FieldTypeClient = {
-    username?: string;
+    clientname?: string;
 };
 
 const ModalLogin = ({
@@ -37,20 +39,38 @@ const ModalLogin = ({
         console.log(key);
     };
 
-    const onFinishLoginUser: FormProps<FieldTypeUser>['onFinish'] = (values) => {
+    const onFinishLoginUser: FormProps<FieldTypeUser>['onFinish'] = async (values) => {
         console.log('Success:', values);
+        let user = {
+            "email": "admin@gmail.com",
+            "password": "123456aA@"
+          }
+
+        try {
+            const data = await signin(user)
+            handleSaveUserInfo(data?.data)
+            router.push('/chat')
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const onFinishLoginClient: FormProps<FieldTypeClient>['onFinish'] = (values) => {
-        console.log('Success:', values);
-        router.push('/chat')
+        // router.push('/chat')
+        // notification.open({
+        //     message: 'Đăng nhập thành công!',
+        //     type: 'success'
+        // });
+
+        console.log(values);
+
     };
 
     const loginFrom = (type: string) => {
         if (type === 'user') {
             return <Form
                 layout={'vertical'}
-                name="basic"
+                name="userForm"
                 initialValues={{ remember: true }}
                 onFinish={onFinishLoginUser}
                 autoComplete="off"
@@ -82,14 +102,14 @@ const ModalLogin = ({
         } else if (type === 'client') {
             return <Form
                 layout={'vertical'}
-                name="basic"
+                name="clientForm"
                 initialValues={{ remember: true }}
                 onFinish={onFinishLoginClient}
                 autoComplete="off"
             >
-                <Form.Item<FieldTypeUser>
+                <Form.Item<FieldTypeClient>
                     label="Tên đăng nhập"
-                    name="username"
+                    name="clientname"
                     rules={[{ required: true, message: 'Tên đăng nhập không đưuọc để trống' }]}
                 >
                     <Input />
