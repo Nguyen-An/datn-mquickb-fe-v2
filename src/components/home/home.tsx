@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import ModalLogin from '../login/modalLogin';
 
 const Home = () => {
-  const router = useRouter()
   const srcIconBrownWatch = icon['iconBrownWatch']
   const srcIconCake = icon['iconCake']
   const srcIconChefAvatar = icon['iconChefAvatar']
@@ -21,7 +20,6 @@ const Home = () => {
   const handleShowFormLogin = (type: string) => {
     setTypeLogin(type)
     setIsopenModalLogin(true)
-    // router.push('/chat')
   }
 
   const handleCloseModalLogin = () => {
