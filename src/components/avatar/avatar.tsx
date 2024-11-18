@@ -5,11 +5,11 @@ import icon from '@/../public/icons/index';
 import { Dropdown, MenuProps, notification, Space } from "antd";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import ProfileForm, { UserFormData } from './ProfileForm';
-import ChangePasswordForm from './ChangePasswordForm';
+import { handleLogout } from '@/constant';
+import ChangePasswordForm from './changePasswordForm';
 
 export default function Avatar({ size }: { size: number }) {
     const srcIconViewProfile = icon['iconViewProfile']
@@ -41,31 +41,30 @@ export default function Avatar({ size }: { size: number }) {
     }
     const items: MenuProps['items'] = [
         {
-            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('view')}><Image src={srcIconViewProfile} alt="" width={20} height={20} /> view_profile</div>,
+            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('view')}><Image src={srcIconViewProfile} alt="" width={20} height={20} /> Xem thông tin cá nhân</div>,
             key: '0',
         },
         {
-            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('create')}><Image src={srcIconEditProfile} alt="" width={20} height={20} />edit_profile</div>,
+            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('create')}><Image src={srcIconEditProfile} alt="" width={20} height={20} />Chỉnh sửa thông tin cá nhân</div>,
             key: '1',
         },
         {
-            label: <div className="outlineDropdownItem" onClick={() => openModalChangePassword()}><Image src={srcIconChangePassword} alt="" width={20} height={20} />change_pasword</div>,
+            label: <div className="outlineDropdownItem" onClick={() => openModalChangePassword()}><Image src={srcIconChangePassword} alt="" width={20} height={20} />Đổi mật khẩu</div>,
             key: '2',
         },
         {
             type: 'divider',
         },
         {
-            label: <div className="outlineDropdownItem" onClick={() => handleSignOut()}><Image src={srcIconSignOut} alt="" width={20} height={20} />logout</div>,
+            label: <div className="outlineDropdownItem" onClick={() => handleSignOut()}><Image src={srcIconSignOut} alt="" width={20} height={20} />Đăng xuất</div>,
             key: '4',
         },
     ];
     const handleSave = () => {
     };
     const handleSignOut = () => {
-        console.log(123123);
-        
         router.push('/')
+        handleLogout();
     }
 
     const handleCancel = () => {

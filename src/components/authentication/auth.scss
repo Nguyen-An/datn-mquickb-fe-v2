@@ -1,0 +1,8 @@
+.ant-spin-fullscreen{
+    // background-color: transparent !important;
+    z-index: 10000;
+    
+    .ant-spin-dot-item{
+        color: var(--blue--primary--);
+    }
+}

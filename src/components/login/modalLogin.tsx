@@ -40,18 +40,24 @@ const ModalLogin = ({
     };
 
     const onFinishLoginUser: FormProps<FieldTypeUser>['onFinish'] = async (values) => {
-        console.log('Success:', values);
         let user = {
-            "email": "admin@gmail.com",
-            "password": "123456aA@"
-          }
+            "email": values?.username,
+            "password": values?.password
+        }
 
         try {
             const data = await signin(user)
             handleSaveUserInfo(data?.data)
+            notification.open({
+                message: 'Đăng nhập thành công!',
+                type: 'success'
+            });
             router.push('/chat')
         } catch (error) {
-            console.log(error);
+            notification.open({
+                message: 'Tài khoản hoặc mật khẩu không chính xác, vui lòng đăng nhập lại!',
+                type: 'error'
+            });
         }
     };
 
@@ -78,7 +84,7 @@ const ModalLogin = ({
                 <Form.Item<FieldTypeUser>
                     label="Tên đăng nhập"
                     name="username"
-                    rules={[{ required: true, message: 'Tên đăng nhập không đưuọc để trống!' }]}
+                    rules={[{ required: true, message: 'Tên đăng nhập không được để trống!' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -110,7 +116,7 @@ const ModalLogin = ({
                 <Form.Item<FieldTypeClient>
                     label="Tên đăng nhập"
                     name="clientname"
-                    rules={[{ required: true, message: 'Tên đăng nhập không đưuọc để trống' }]}
+                    rules={[{ required: true, message: 'Tên đăng nhập không được để trống' }]}
                 >
                     <Input />
                 </Form.Item>

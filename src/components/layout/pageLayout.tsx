@@ -8,7 +8,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
             <div className="bg-[#f5f5f5] relative h-screen">
                 <Nav />
                 <SideBar />
-                <div className="content lg:ml-[100px] h-full pt-[70px] lg:mt-0 screen-responsive">
+                <div className="content ml-[100px] h-full pt-[70px] mt-0 screen-responsive">
                     <div>
                         {children}
                     </div>
