@@ -105,7 +105,7 @@ const MenuPage = () => {
         try {
             const data = await getData(params)
             setDataTable(data?.data?.data)
-            setCurrentPage(data?.data?.currentPage)
+            setCurrentPage(data?.data?.current_page)
         } catch (error) {
             // notification.open({
             //     message: 'Tài khoản hoặc mật khẩu không chính xác, vui lòng đăng nhập lại!',
@@ -115,20 +115,7 @@ const MenuPage = () => {
     }
 
     useEffect(() => {
-        const getDT = async () => {
-            let params = {
-                "page": 1,
-                "page_size": 20
-            }
-
-            try {
-                const data = await getData(params)
-                setDataTable(data?.data?.data)
-                setCurrentPage(data?.data?.current_page)
-            } catch (error) {
-            }
-        }
-        getDT()
+        getDataMenu(1)
     }, [])
 
     return (

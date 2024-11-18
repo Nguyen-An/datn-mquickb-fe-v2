@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
+import { uploadIamge } from '@/api/file';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -15,8 +16,8 @@ const getBase64 = (file: FileType): Promise<string> =>
 
 const FILE_TYPE = [".jpg", ".png", ".svg", "image/jpeg", "image/png"]
 
-const UploadImage: React.FC<{ fileList: UploadFile[], setFileList: any }> = ({ fileList, setFileList }) => {
-    
+const UploadImage: React.FC<{ setFile: (item: any) => void }> = ({ setFile }) => {
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
 
@@ -60,21 +61,21 @@ const UploadImage: React.FC<{ fileList: UploadFile[], setFileList: any }> = ({ f
         },
         customRequest: async (options: any) => {
             const { onSuccess, file, onProgress } = options;
-            const fmData = new FormData();
             const config = {
                 headers: { "content-type": "multipart/form-data" },
                 onUploadProgress: (event: any) => {
                     onProgress({ percent: (event.loaded / event.total) * 100 });
                 }
             };
-            fmData.append("file", file);
+            
             try {
-                // const dataKey = await uploadAvatar(fmData, config);
-                // setKey_avatar(dataKey)
-                console.log("fmData: ", fmData);
+                const formData = new FormData();
+                formData.append('file', file);
+                const dataKey = await uploadIamge(formData);
+                setFile(dataKey?.data?.url)
                 onSuccess("Ok");
             } catch (err: any) {
-                // setPreviewBase64(key_avatar)
+                onSuccess("Err");
             }
         },
         beforeUpload: (file) => {

@@ -1,16 +1,7 @@
 import { DataFrom } from '@/lib/interface';
-import { Checkbox, Form, GetProp, Input, Modal, UploadFile, UploadProps } from 'antd';
+import { Checkbox, Form, FormProps, GetProp, Input, Modal, UploadFile, UploadProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UploadImage from '../upload/uploadImage';
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-
-const getBase64 = (file: FileType): Promise<string> =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-    });
 
 const MenuFormModal: React.FC<{
     isModalOpen: boolean;
@@ -30,10 +21,12 @@ const MenuFormModal: React.FC<{
     }, [dataFrom])
 
     const [form] = Form.useForm();
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [file, setFile] = useState<any>(null);
 
-    const handleOk = () => {
-        console.log("fileList: ", fileList);
+    const handleOk = async () => {
+        console.log("file: ", file);
+        const valuesForm = await form.validateFields();
+        console.log('Giá trị của các trường:', valuesForm);
     }
 
     return (
@@ -45,20 +38,20 @@ const MenuFormModal: React.FC<{
                         form={form}
                         style={{ width: "100%" }}
                     >
-                        <Form.Item label="Tên món ăn">
+                        <Form.Item name="name" label="Tên món ăn">
                             <Input placeholder="Nhập tên món ăn" />
                         </Form.Item>
-                        <Form.Item label="Miêu tả">
+                        <Form.Item name="description" label="Miêu tả">
                             <Input placeholder="Nhập miêu tả" />
                         </Form.Item>
-                        <Form.Item label="Loại món ăn">
+                        <Form.Item name="category" label="Loại món ăn">
                             <Input placeholder="Nhập loại món ăn" />
                         </Form.Item>
-                        <Form.Item name="remember" valuePropName="checked" noStyle>
+                        <Form.Item name="is_available" valuePropName="checked" label={null}>
                             <Checkbox>Hoạt động</Checkbox>
                         </Form.Item>
-                        <Form.Item label="Upload Ảnh" className='mt-4'>
-                            <UploadImage fileList={fileList} setFileList={setFileList}></UploadImage>
+                        <Form.Item name="image_link" label="Upload Ảnh" className='mt-4'>
+                            <UploadImage setFile={setFile}></UploadImage>
                         </Form.Item>
                     </Form>
                 </div>

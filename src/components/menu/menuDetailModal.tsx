@@ -30,7 +30,7 @@ const MenuDetailModal: React.FC<{
             <p className='mb-3'><strong>Thời gian cập nhật: </strong> {itemData?.created_at ? moment(itemData?.created_at).format("DD-MM-YYYY") : "--"} </p>
           </div>
           <div className='flex flex-col items-center text-center'>
-            <p><strong>Ảnh:</strong> <Image src={itemData?.image_link} alt="" width={120} height={120} /></p>
+            <p><strong>Ảnh:</strong> {itemData?.image_link ? (<Image src={itemData?.image_link} alt="My Image" width={120} height={120} />) : null}</p>
           </div>
         </div>
       </Modal>
