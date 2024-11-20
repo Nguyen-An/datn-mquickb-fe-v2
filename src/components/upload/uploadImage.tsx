@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
@@ -16,7 +16,7 @@ const getBase64 = (file: FileType): Promise<string> =>
 
 const FILE_TYPE = [".jpg", ".png", ".svg", "image/jpeg", "image/png"]
 
-const UploadImage: React.FC<{ setFile: (item: any) => void }> = ({ setFile }) => {
+const UploadImage: React.FC<{file: any, setFile: (item: any) => void }> = ({ file, setFile }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -32,6 +32,17 @@ const UploadImage: React.FC<{ setFile: (item: any) => void }> = ({ setFile }) =>
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
     setFileList(newFileList);
+
+  useEffect(() => {
+    if(fileList.length === 0 && file) {
+      setFileList([{
+          uid: '-1',
+          name: 'image.jpg',
+          status: 'done',
+          url: 'https://mquickb.s3.amazonaws.com/7977c799-e3ba-48c4-b3c8-621e737257de.jpg',
+      }])
+    }
+  }, [file])
 
   const uploadButton = (
     <button style={{ border: 0, background: 'none' }} type="button">

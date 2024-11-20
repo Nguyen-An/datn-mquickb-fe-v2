@@ -1,5 +1,5 @@
 "use client";
-import { Input, Modal, Pagination, Tooltip } from 'antd';
+import { Input, Modal, notification, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
@@ -8,7 +8,7 @@ import MenuDetailModal from './menuDetailModal';
 import MenuFormModal from './menuFormModal';
 import { DataFrom } from '@/lib/interface';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { getData } from '@/api/menu';
+import { deleteMenuItem, getData } from '@/api/menu';
 
 const { confirm } = Modal;
 
@@ -75,11 +75,12 @@ const MenuPage = () => {
     const handleOkModalDetail = () => {
         setIsShowDetail(false)
     }
-    const handleCancelForm = () => {
+    const handleCancelForm = (reload?: boolean) => {
+        if(reload) getDataMenu(currentPage)
         setIsShowForm(false)
     }
 
-    const showDeleteConfirm = () => {
+    const showDeleteConfirm = (item: any) => {
         confirm({
             title: 'Bạn có chắc chắn muốn xóa món ăn này',
             icon: <ExclamationCircleFilled />,
@@ -88,8 +89,20 @@ const MenuPage = () => {
             okType: 'danger',
             cancelText: 'No',
             centered: true,
-            onOk() {
-                console.log('OK');
+            onOk: async () => {
+                try {
+                    await deleteMenuItem(item.id)
+                    notification.open({
+                        message: 'Xóa món ăn thành công!',
+                        type:'success'
+                    });
+                    getDataMenu(currentPage)
+                } catch (error) {
+                    notification.open({
+                        message: 'Đã có lỗi xảy ra',
+                        type:'error'
+                    });
+                }
             },
             onCancel() {
                 console.log('Cancel');
@@ -108,7 +121,7 @@ const MenuPage = () => {
             setCurrentPage(data?.data?.current_page)
         } catch (error) {
             // notification.open({
-            //     message: 'Tài khoản hoặc mật khẩu không chính xác, vui lòng đăng nhập lại!',
+            //     message: 'Đã có lỗi xả ra khi lấy dữ liệu!',
             //     type: 'error'
             // });
         }
@@ -136,6 +149,7 @@ const MenuPage = () => {
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Miêu tả</th>
                                     <th className="scroll-header" style={{ width: "120px" }}>Ảnh</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Loại món</th>
+                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Đơn giá</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái</th>
                                     <th style={{ width: "170px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
@@ -150,6 +164,7 @@ const MenuPage = () => {
                                                 <td><div className="text-center">{item?.description}</div></td>
                                                 <td><div className="text-center"><Image src={item?.image_link} alt="" width={120} height={120} /></div></td>
                                                 <td><div className="text-center">{item?.category}</div></td>
+                                                <td><div className="text-center">{item?.price}</div></td>
                                                 <td><div className="text-center">{item?.is_available ? "Hoạt động" : "Không hoạt động"}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">
@@ -160,7 +175,7 @@ const MenuPage = () => {
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                         <Tooltip title={"delete"}>
-                                                            <button onClick={() => { showDeleteConfirm() }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
+                                                            <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>
                                                 </td>

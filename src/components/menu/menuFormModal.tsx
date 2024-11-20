@@ -1,37 +1,70 @@
 import { DataFrom } from '@/lib/interface';
-import { Checkbox, Form, FormProps, GetProp, Input, Modal, UploadFile, UploadProps } from 'antd';
+import { Checkbox, Form, FormProps, GetProp, Input, Modal, notification, UploadFile, UploadProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UploadImage from '../upload/uploadImage';
+import { postDataMenu } from '@/api/menu';
 
 const MenuFormModal: React.FC<{
     isModalOpen: boolean;
     dataFrom: DataFrom
-    handleCancel: () => void;
+    handleCancel: (reload?: boolean) => void;
 }> = ({ isModalOpen, dataFrom, handleCancel }) => {
 
     const [title, setTitle] = useState("")
     const [data, setData] = useState({})
+    const [form] = Form.useForm();
+    const [file, setFile] = useState<any>(null);
+
 
     useEffect(() => {
         if (dataFrom.mode === 'create') {
             setTitle("Thêm mới món ăn")
         } else if (dataFrom.mode === 'edit') {
             setTitle("Chỉnh sửa món ăn")
+            form.setFieldsValue({
+                "name": dataFrom.data?.name ?? "",
+                "description": dataFrom.data?.description ?? "",
+                "price": dataFrom.data?.price ?? "",
+                "category": dataFrom.data?.category ?? "",
+                "is_available": dataFrom.data?.is_available ?? false,
+            })
+            
+            if(dataFrom.data?.image_link) setFile(dataFrom.data?.image_link)
         }
     }, [dataFrom])
 
-    const [form] = Form.useForm();
-    const [file, setFile] = useState<any>(null);
 
     const handleOk = async () => {
-        console.log("file: ", file);
         const valuesForm = await form.validateFields();
-        console.log('Giá trị của các trường:', valuesForm);
+        let payload = {
+            "name": valuesForm?.name ?? "",
+            "description": valuesForm?.description ?? "",
+            "image_link": file,
+            "price": valuesForm?.price ? Number(valuesForm?.price) : 0,
+            "category": valuesForm?.category ?? "",
+            "is_available": valuesForm?.is_available ?? false
+        }
+
+        if(dataFrom.mode === 'create'){
+            try {
+                const data = await postDataMenu(payload)
+                notification["success"]({
+                    message: `Thêm mới thành công!`,
+                });
+                handleCancel(true)
+            } catch (error) {
+                notification["error"]({
+                    message: `Thêm mới thất bại!`,
+                });
+            }
+        } else if(dataFrom.mode === 'edit') {
+
+        }
     }
 
     return (
         <>
-            <Modal title={title} centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={600}>
+            <Modal title={title} centered open={isModalOpen} onOk={handleOk} onCancel={() => handleCancel(false)} width={600}>
                 <div className='flex mt-5 w-full'>
                     <Form
                         layout="vertical"
@@ -47,11 +80,14 @@ const MenuFormModal: React.FC<{
                         <Form.Item name="category" label="Loại món ăn">
                             <Input placeholder="Nhập loại món ăn" />
                         </Form.Item>
+                        <Form.Item name="price" label="Đơn giá">
+                            <Input placeholder="Nhập đơn giá món ăn" />
+                        </Form.Item>
                         <Form.Item name="is_available" valuePropName="checked" label={null}>
                             <Checkbox>Hoạt động</Checkbox>
                         </Form.Item>
                         <Form.Item name="image_link" label="Upload Ảnh" className='mt-4'>
-                            <UploadImage setFile={setFile}></UploadImage>
+                            <UploadImage file={file} setFile={setFile}></UploadImage>
                         </Form.Item>
                     </Form>
                 </div>
