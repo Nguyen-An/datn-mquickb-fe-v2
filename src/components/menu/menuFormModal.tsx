@@ -2,7 +2,7 @@ import { DataFrom } from '@/lib/interface';
 import { Checkbox, Form, FormProps, GetProp, Input, Modal, notification, UploadFile, UploadProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UploadImage from '../upload/uploadImage';
-import { postDataMenu } from '@/api/menu';
+import { postDataMenu, putDataMenu } from '@/api/menu';
 
 const MenuFormModal: React.FC<{
     isModalOpen: boolean;
@@ -39,7 +39,7 @@ const MenuFormModal: React.FC<{
         let payload = {
             "name": valuesForm?.name ?? "",
             "description": valuesForm?.description ?? "",
-            "image_link": file,
+            "image_link": file ? file : "",
             "price": valuesForm?.price ? Number(valuesForm?.price) : 0,
             "category": valuesForm?.category ?? "",
             "is_available": valuesForm?.is_available ?? false
@@ -58,7 +58,18 @@ const MenuFormModal: React.FC<{
                 });
             }
         } else if(dataFrom.mode === 'edit') {
-
+            try {
+                const data = await putDataMenu(payload, dataFrom?.data?.id)
+                notification["success"]({
+                    message: `Thêm mới thành công!`,
+                });
+                handleCancel(true)
+            } catch (error) {
+                notification["error"]({
+                    message: `Thêm mới thất bại!`,
+                });
+            }
+            
         }
     }
 

@@ -8,7 +8,8 @@ import MenuDetailModal from './menuDetailModal';
 import MenuFormModal from './menuFormModal';
 import { DataFrom } from '@/lib/interface';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { deleteMenuItem, getData } from '@/api/menu';
+import { deleteMenuItem, getDataM } from '@/api/menu';
+import { deleteTable } from '@/api/table';
 
 const { confirm } = Modal;
 
@@ -82,7 +83,7 @@ const MenuPage = () => {
 
     const showDeleteConfirm = (item: any) => {
         confirm({
-            title: 'Bạn có chắc chắn muốn xóa món ăn này',
+            title: 'Bạn có chắc chắn muốn xóa bàn ăn này',
             icon: <ExclamationCircleFilled />,
             content: '',
             okText: 'Yes',
@@ -91,9 +92,9 @@ const MenuPage = () => {
             centered: true,
             onOk: async () => {
                 try {
-                    await deleteMenuItem(item.id)
+                    await deleteTable(item.id)
                     notification.open({
-                        message: 'Xóa món ăn thành công!',
+                        message: 'Xóa bàn ăn thành công!',
                         type:'success'
                     });
                     getDataMenu(currentPage)
@@ -116,7 +117,7 @@ const MenuPage = () => {
             "page_size": 20
         }
         try {
-            const data = await getData(params)
+            const data = await getDataM(params)
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
         } catch (error) {

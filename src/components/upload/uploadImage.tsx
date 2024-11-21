@@ -39,7 +39,7 @@ const UploadImage: React.FC<{file: any, setFile: (item: any) => void }> = ({ fil
           uid: '-1',
           name: 'image.jpg',
           status: 'done',
-          url: 'https://mquickb.s3.amazonaws.com/7977c799-e3ba-48c4-b3c8-621e737257de.jpg',
+          url: file,
       }])
     }
   }, [file])
