@@ -12,6 +12,7 @@ import TableDetailModal from './tableDetailModal';
 import TableFormModal from './tableFormModal';
 import moment from 'moment';
 import { COMMON, getLabelByValue } from '@/constant/common';
+import { getLinkQRCode } from '@/constant';
 interface Table {
     id: any;
     qr_code: any;
@@ -159,7 +160,7 @@ const TablePage = () => {
                                             <tr key={index}>
                                                 <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
                                                 <td><div className="text-center">{item?.table_name}</div></td>
-                                                <td><div className="text-center">{item?.qr_code}</div></td>
+                                                <td><div className="text-center">{getLinkQRCode(item?.qr_code)}</div></td>
                                                 <td><div className="text-center"><QRCode size={120} value={item?.qr_code || '-'} /></div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.TABLE_STATUS, item?.status)}</div></td>
                                                 <td><div className="text-center">{moment(item?.updated_at).format("DD-MM-YYYY")}</div></td>

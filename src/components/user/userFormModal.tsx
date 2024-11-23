@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import UploadImage from '../upload/uploadImage';
 import { postDataMenu, putDataMenu } from '@/api/menu';
 import { COMMON } from '@/constant/common';
+import { postDataUser } from '@/api/user';
 
 const UserFormModal: React.FC<{
     isModalOpen: boolean;
@@ -24,13 +25,11 @@ const UserFormModal: React.FC<{
             setTitle("Chỉnh sửa người dùng")
             form.setFieldsValue({
                 "name": dataFrom.data?.name ?? "",
-                "description": dataFrom.data?.description ?? "",
-                "price": dataFrom.data?.price ?? "",
-                "category": dataFrom.data?.category ?? "",
-                "is_available": dataFrom.data?.is_available ?? false,
+                "email": dataFrom.data?.email ?? "",
+                "phone_number": dataFrom.data?.phone_number ?? "",
             })
-            
-            if(dataFrom.data?.image_link) setFile(dataFrom.data?.image_link)
+
+            setRole(dataFrom.data?.role)
         }
     }, [dataFrom])
 
@@ -39,16 +38,14 @@ const UserFormModal: React.FC<{
         const valuesForm = await form.validateFields();
         let payload = {
             "name": valuesForm?.name ?? "",
-            "description": valuesForm?.description ?? "",
-            "image_link": file ? file : "",
-            "price": valuesForm?.price ? Number(valuesForm?.price) : 0,
-            "category": valuesForm?.category ?? "",
-            "is_available": valuesForm?.is_available ?? false
+            "email": valuesForm?.email ?? "",
+            "role": role,
+            "phone_number": valuesForm?.phone_number ?? ""
         }
 
-        if(dataFrom.mode === 'create'){
+        if (dataFrom.mode === 'create') {
             try {
-                const data = await postDataMenu(payload)
+                const data = await postDataUser(payload)
                 notification["success"]({
                     message: `Thêm mới thành công!`,
                 });
@@ -58,7 +55,7 @@ const UserFormModal: React.FC<{
                     message: `Thêm mới thất bại!`,
                 });
             }
-        } else if(dataFrom.mode === 'edit') {
+        } else if (dataFrom.mode === 'edit') {
             try {
                 const data = await putDataMenu(payload, dataFrom?.data?.id)
                 notification["success"]({
@@ -70,7 +67,7 @@ const UserFormModal: React.FC<{
                     message: `Thêm mới thất bại!`,
                 });
             }
-            
+
         }
     }
 
@@ -90,18 +87,19 @@ const UserFormModal: React.FC<{
                         <Form.Item name="name" label="Tên người dùng">
                             <Input placeholder="Nhập tên người dùng" />
                         </Form.Item>
-                        <Form.Item name="description" label="Email">
+                        <Form.Item name="email" label="Email">
                             <Input placeholder="Nhập email" />
                         </Form.Item>
-                        <Select
-                            className='mb-3'
-                            placeholder="Chọn trạng thái"
-                            style={{ width: "100%" }}
-                            options={COMMON.ROLE}
-                            value={role}
-                            onChange={handleChange}
-                        />
-                        <Form.Item name="price" label="Số điện thoại">
+                        <Form.Item label="Role">
+                            <Select
+                                placeholder="Chọn trạng thái"
+                                style={{ width: "100%" }}
+                                options={COMMON.ROLE}
+                                value={role}
+                                onChange={handleChange}
+                            />
+                        </Form.Item>
+                        <Form.Item name="phone_number" label="Số điện thoại">
                             <Input placeholder="Nhập số điện thoại" />
                         </Form.Item>
                     </Form>

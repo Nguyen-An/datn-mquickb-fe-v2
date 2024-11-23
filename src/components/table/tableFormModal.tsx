@@ -6,6 +6,7 @@ import { postDataMenu, putDataMenu } from '@/api/menu';
 import { v4 as uuidv4 } from 'uuid';
 import { postDataTable, putDataTable } from '@/api/table';
 import { COMMON } from '@/constant/common';
+import { getLinkQRCode } from '@/constant';
 
 const TableFormModal: React.FC<{
     isModalOpen: boolean;
@@ -74,7 +75,7 @@ const TableFormModal: React.FC<{
     }
 
     const changeQRCode = () => {
-        const newToken = `http://localhost:3000/customer/${uuidv4()}`;
+        const newToken = `${uuidv4()}`;
         form.setFieldValue("qr_code", newToken)
         setQrCode(newToken)
     }
@@ -103,7 +104,7 @@ const TableFormModal: React.FC<{
                             <Input placeholder="" disabled={true} />
                         </Form.Item>
                         <button className='bg-blue-500 hover:bg-blue-700 text-white py-1 px-5 rounded' onClick={() => changeQRCode()}>Đổi mã</button>
-                        <QRCode size={120} value={qrCode || '-'} />
+                        <QRCode size={120} value={getLinkQRCode(qrCode)} />
                     </Form>
                 </div>
             </Modal>

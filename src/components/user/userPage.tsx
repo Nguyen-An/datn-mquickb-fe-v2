@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
 import icon from '@/../public/icons/index';
-import { getDataU } from '@/api/user';
+import { deleteUser, getDataU } from '@/api/user';
 import { DataFrom } from '@/lib/interface';
 import confirm from 'antd/es/modal/confirm';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -86,11 +86,11 @@ const UserPage = () => {
             centered: true,
             onOk: async () => {
                 try {
-                    // await deleteTable(item.id)
-                    // notification.open({
-                    //     message: 'Xóa bàn ăn thành công!',
-                    //     type:'success'
-                    // });
+                    await deleteUser(item.id)
+                    notification.open({
+                        message: 'Xóa user thành công!',
+                        type:'success'
+                    });
                     getDataUser(currentPage)
                 } catch (error) {
                     notification.open({

@@ -3,6 +3,7 @@ import { Modal, QRCode } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { getLinkQRCode } from '@/constant';
 
 const TableDetailModal: React.FC<{
   isModalOpen: boolean;
@@ -24,12 +25,12 @@ const TableDetailModal: React.FC<{
           <div className="order-details">
             <p className='mb-3'><strong>Mã: </strong> {itemData?.id ? itemData?.id : "--"}</p>
             <p className='mb-3'><strong>Tên bàn ăn: </strong> {itemData?.table_name ? itemData?.table_name : "--"}</p>
-            <p className='mb-3'><strong>Link QR: </strong> {itemData?.qr_code ? itemData?.qr_code : "--"}</p>
+            <p className='mb-3'><strong>Link QR: </strong> {getLinkQRCode(itemData?.qr_code)}</p>
             <p className='mb-3'><strong>Trạng thái: </strong> {itemData?.status ? "Hoạt động" : "Không hoạt động"}</p>
             <p className='mb-3'><strong>Thời gian cập nhật: </strong> {itemData?.updated_at ? moment(itemData?.updated_at).format("DD-MM-YYYY") : "--"} </p>
           </div>
           <div className='flex flex-col items-center text-center'>
-            <p><strong>Ảnh:</strong> {itemData?.qr_code ? (<QRCode size={120} value={itemData?.qr_code || '-'} />) : null}</p>
+            <p><strong>Ảnh:</strong> {itemData?.qr_code ? (<QRCode size={120} value={getLinkQRCode(itemData?.qr_code)} />) : null}</p>
           </div>
         </div>
       </Modal>

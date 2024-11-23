@@ -27,3 +27,10 @@ export const handleLogout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
 };
+
+export const getLinkQRCode = (qrCode: string) => {
+  if (qrCode) {
+    return `http://localhost:3000/customer/${qrCode}`
+  }
+  return "-"
+}
