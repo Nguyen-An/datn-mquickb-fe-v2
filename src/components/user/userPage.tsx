@@ -64,7 +64,7 @@ const UserPage = () => {
     const getDataUser = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 20
+            "page_size": 10
         }
         try {
             const data = await getDataU(params)

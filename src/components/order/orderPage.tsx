@@ -1,9 +1,28 @@
 "use client";
 import { Input, Pagination, Select, Tooltip } from 'antd';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
 import icon from '@/../public/icons/index';
+import { DataFrom } from '@/lib/interface';
+import { getDataOrderItems } from '@/api/order';
+import OrderItemDetailModal from './orderItemDetailModal';
+import OrderItemFormModal from './orderItemFormModal';
+import confirm from 'antd/es/modal/confirm';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+
+interface OrderItems {
+    id: any;
+    order_id: any;
+    menu_item_id: any;
+    quantity: any;
+    status: any;
+    created_by: any;
+    updated_by: any;
+    created_at: any;
+    updated_at: any;
+    menu_item_name: any;
+}
 
 const OrderPage = () => {
     const srcIconDelete = icon['iconDelete']
@@ -13,13 +32,75 @@ const OrderPage = () => {
         console.log(`selected ${value}`);
     };
 
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPage, setTotalPage] = useState(100)
+    const [isShowDetail, setIsShowDetail] = useState(false)
+    const [isShowForm, setIsShowForm] = useState(false)
+    const [dataFrom, setDataFrom] = useState<DataFrom>({
+        mode: "detail",
+        data: {}
+    })
 
-    // const onPageChange = async (page: number) => {
-    //     // await getList(page, keyword, categorySelect);
-    //     setCurrentPage(page);
-    // }
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPage, setTotalPage] = useState(0)
+    const [dataTable, setDataTable] = useState<OrderItems[]>([])
+
+    const onPageChange = async (page: number) => {
+        // await getList(page, keyword, categorySelect);
+        setCurrentPage(page);
+    }
+
+    const handleShowModal = (mode: string, item: any) => {
+        switch (mode) {
+            case 'view':
+                setIsShowDetail(true)
+                break;
+            case 'create':
+                setIsShowForm(true)
+                break;
+            case 'edit':
+                setIsShowForm(true)
+                break;
+            default:
+                break;
+        }
+
+        const data: DataFrom = {
+            mode: mode,
+            data: item
+        }
+
+        setDataFrom(data)
+    }
+
+    const handleCancelModalDetail = () => {
+        setIsShowDetail(false)
+    }
+
+    const handleOkModalDetail = () => {
+        setIsShowDetail(false)
+    }
+    const handleCancelForm = (reload?: boolean) => {
+        if(reload) getDataOrderItem(currentPage)
+        setIsShowForm(false)
+    }
+
+    const getDataOrderItem = async (page: number) => {
+        let params = {
+            "page": page,
+            "page_size": 10
+        }
+        try {
+            const data = await getDataOrderItems(params)
+            setDataTable(data?.data?.data)
+            setCurrentPage(data?.data?.current_page)
+        } catch (error) {
+        }
+    }
+
+    useEffect(() => { 
+        getDataOrderItem(1)
+    }, [])
+
+
     return (
         <>
             <div className='px-8 py-6'>
@@ -52,159 +133,47 @@ const OrderPage = () => {
                                     <th><span>No.</span></th>
                                     <th className="scroll-header" style={{ minWidth: "180px" }}>Tên món ăn</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Tên bàn</th>
-                                    <th className="scroll-header" style={{ minWidth: "180px" }}>Tên khách hàng</th>
+                                    {/* <th className="scroll-header" style={{ minWidth: "180px" }}>Tên khách hàng</th> */}
                                     <th className="scroll-header" style={{ width: "150px" }}>Số lượng</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Đơn giá</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Trạng thái</th>
-                                    <th style={{ width: "170px" }}><span className="text-left">Hành động</span></th>
+                                    <th style={{ width: "110px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    {/* <td className="bg-no-scroll" style={{ minWidth: '60px' }}>{(index + 1) + (currentPage - 1) * pageSize}</td> */}
-                                    <td><div className="text-center">1</div></td>
-                                    <td><div className="text-center">Vịt hấp ngải cứu</div></td>
-                                    <td><div className="text-center">Bàn số 1</div></td>
-                                    <td><div className="text-center">Nguyen An</div></td>
-                                    <td><div className="text-center">2</div></td>
-                                    <td><div className="text-center">200000</div></td>
-                                    <td><div className="text-center">Đang nấu</div></td>
-                                    <td className="bg-no-scroll" style={{ width: "170px" }}>
-                                        <div className="flex justify-between">
-                                            <Tooltip title={"detail"}>
-                                                <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"edit"}>
-                                                <button><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                            <Tooltip title={"delete"}>
-                                                <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                            </Tooltip>
-                                        </div>
-                                    </td>
-                                </tr>
+                            {(dataTable && dataTable?.length > 0) ? (<>
+                                    {
+                                        dataTable.map((item: any, index: any) => (
+                                            <tr key={index}>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{`Bàn số ${index}`}</div></td>
+                                                <td><div className="text-center">{item?.menu_item_name}</div></td>
+                                                <td><div className="text-center">{item?.quantity}</div></td>
+                                                <td><div className="text-center">{1000000}</div></td>
+                                                <td><div className="text-center">{item?.status}</div></td>
+                                                <td className="bg-no-scroll" style={{ width: "110px" }}>
+                                                    <div className="flex justify-between">
+                                                        <Tooltip title={"detail"}>
+                                                            <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
+                                                        </Tooltip>
+                                                        <Tooltip title={"edit"}>
+                                                            <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
+                                                        </Tooltip>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </>) : null}
                             </tbody>
                         </table>
 
                     </div>
                     <div className="mt-5 flex justify-center">
-                        {/* <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} /> */}
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
                     </div>
+                    {isShowDetail ? (<OrderItemDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></OrderItemDetailModal>) : null}
+                    {isShowForm ? (<OrderItemFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></OrderItemFormModal>) : null}
                 </div>
             </div>
         </>

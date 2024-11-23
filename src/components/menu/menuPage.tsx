@@ -114,7 +114,7 @@ const MenuPage = () => {
     const getDataMenu = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 20
+            "page_size": 10
         }
         try {
             const data = await getDataM(params)
@@ -143,7 +143,7 @@ const MenuPage = () => {
                                 <tr>
                                     <th><span>No.</span></th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Tên món ăn</th>
-                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Miêu tả</th>
+                                    <th className="scroll-header" style={{ minWidth: "300px" }}>Miêu tả</th>
                                     <th className="scroll-header" style={{ width: "120px" }}>Ảnh</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Loại món</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Đơn giá</th>

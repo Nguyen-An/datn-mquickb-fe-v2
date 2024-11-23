@@ -86,7 +86,7 @@ export default function Avatar({ size }: { size: number }) {
                     <a onClick={(e) => e.preventDefault()}>
                         <Space>
                             {/* <AvatarComon srcImg={user.link_avatar} email={userInfo?.email} width={`${size}px`} height={`${size}px`} fontSize={`${Math.floor(size / 1.6)}px`} /> */}
-                            hello
+                            Avatar
                         </Space>
                     </a>
                 </Dropdown>
