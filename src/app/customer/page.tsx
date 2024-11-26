@@ -1,10 +1,7 @@
+import CustomerLogin from "@/components/customerLogin/customerLogin";
+
 const LoginqrPage = () => {
-    return (
-      <>
-      LoginqrPage
-      </>
-    );
-  };
-  
-  export default LoginqrPage;
-  
+  return (<CustomerLogin/>)
+};
+
+export default LoginqrPage;

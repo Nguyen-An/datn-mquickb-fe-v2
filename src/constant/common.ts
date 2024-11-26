@@ -1,4 +1,22 @@
 export const COMMON = {
+    USER_ROLES: [
+        {
+            value: "customer",
+            label: "Khác hàng"
+        },
+        {
+            value: "customer_qr",
+            label: "Khác hàng QR"
+        },
+        {
+            value: "staff",
+            label: "Nhân viên"
+        },
+        {
+            value: "manager",
+            label: "Quản lý"
+        },
+    ],
     TABLE_STATUS: [
         {
             value: "available",
@@ -36,4 +54,4 @@ export const COMMON = {
 export const getLabelByValue = (ARR: any, value: any) => {
     const status = ARR.find((item: any) => item.value === value);
     return status ? status.label : null; // Trả về label nếu tìm thấy, nếu không trả về null
-  };
+};

@@ -10,6 +10,7 @@ import confirm from 'antd/es/modal/confirm';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import UserDetailModal from './userDetailModal';
 import UserFormModal from './userFormModal';
+import { COMMON, getLabelByValue } from '@/constant/common';
 
 interface User {
     name: any;
@@ -154,7 +155,7 @@ const UserPage = () => {
                                                 <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
                                                 <td><div className="text-center">{item?.name}</div></td>
                                                 <td><div className="text-center">{item?.email}</div></td>
-                                                <td><div className="text-center">{item?.role}</div></td>
+                                                <td><div className="text-center">{getLabelByValue(COMMON.USER_ROLES, item?.role)}</div></td>
                                                 <td><div className="text-center">{item?.phone_number}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">

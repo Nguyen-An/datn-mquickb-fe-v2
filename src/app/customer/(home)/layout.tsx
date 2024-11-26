@@ -1,3 +1,4 @@
+import PageCustomerLayout from "@/components/pageCustomerLayout/PageCustomerLayout";
 
 const MenuCustomerLayout = ({
     children,
@@ -6,11 +7,9 @@ const MenuCustomerLayout = ({
 }) => {
     return (
         <>
-        {/* <CollapseProvider> */}
-            {/* <PageLayout> */}
+            <PageCustomerLayout>
                     {children}
-            {/* </PageLayout> */}
-        {/* </CollapseProvider> */}
+            </PageCustomerLayout>
         </>
     );
 };

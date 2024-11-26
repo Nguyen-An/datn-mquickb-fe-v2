@@ -1,0 +1,17 @@
+.customer-header {
+    .ant-menu-overflow {
+        background-color: #000816;
+
+        .ant-menu-title-content {
+            color: #fff;
+            font-weight: 500;
+        }
+    }
+
+    :where(.css-dev-only-do-not-override-49qm).ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after,
+    :where(.css-dev-only-do-not-override-49qm).ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-item-selected::after,
+    :where(.css-dev-only-do-not-override-49qm).ant-menu-light.ant-menu-horizontal>.ant-menu-submenu-selected::after,
+    :where(.css-dev-only-do-not-override-49qm).ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-selected::after {
+        display: none;
+    }
+}
