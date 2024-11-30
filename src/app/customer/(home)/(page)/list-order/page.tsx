@@ -1,9 +1,11 @@
-const ListOrderPage = () => {
+import ListOrderPage from "@/components/customer-menu/listMenuPage";
+
+const ListOrderP = () => {
     return (
         <>
-        ListOrderPage
+        <ListOrderPage></ListOrderPage>
         </>
     )
 };
 
-export default ListOrderPage;
+export default ListOrderP;
