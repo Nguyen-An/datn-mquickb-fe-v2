@@ -1,7 +1,9 @@
+import StaffCalls from "@/components/staffCalls/staffCalls";
+
 const StaffCallsP = () => {
     return (
         <>
-        StaffCallsP
+            <StaffCalls></StaffCalls>
         </>
     )
 };

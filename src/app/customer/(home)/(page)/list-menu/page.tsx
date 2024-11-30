@@ -1,4 +1,4 @@
-import ListMenuPage from "@/components/customer-menu/listMenuPage";
+import ListMenuPage from "@/components/customerMenu/listMenuPage";
 
 const ListMenuL = () => {
     return (
