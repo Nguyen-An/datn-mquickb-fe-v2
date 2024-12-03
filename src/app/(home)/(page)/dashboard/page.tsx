@@ -1,9 +1,11 @@
-const DashboardPage = () => {
+import DashboardPage from "@/components/dashboardPage/DashboardPage";
+
+const DashboardP = () => {
     return (
         <>
-        DashboardPage
+        <DashboardPage></DashboardPage>
         </>
     )
 };
 
-export default DashboardPage;
+export default DashboardP;
