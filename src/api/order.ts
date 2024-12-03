@@ -30,11 +30,13 @@ export async function payTable(id: any, params?: any) {
     return getData
 }
 
-// export async function putDataMenu(payload?: any, id?: any) {
-//     const data = await sendPut(`menu/${id}`, payload)
-//     return data
-// }
-// export async function deleteMenuItem(id: any) {
-//     const data = await sendDelete(`menu/${id}`)
-//     return data
-// }
+export async function getDataDashboardOrder(params?: any) {
+    const getData = await sendGet(`order/dashboard/order`, params)
+    return getData
+}
+
+
+export async function getDataDashboardRevenue(params?: any) {
+    const getData = await sendGet(`order/dashboard/revenue`, params)
+    return getData
+}
