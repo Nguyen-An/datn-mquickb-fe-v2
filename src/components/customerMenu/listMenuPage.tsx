@@ -105,13 +105,10 @@ const ListMenuPage = () => {
                                     </div>
                                     <div className='flex flex-col justify-between'>
                                         <div>{item.name}</div>
-                                        <div>{item.priceView}đ &nbsp; x <span className='bg-[#fff] text-[#000816] rounded-[5px] p-1'>{item.quantity}</span></div>
+                                        <div>{item.priceView} đ</div>
                                     </div>
                                 </div>
                                 <div className='flex'>
-                                    {/* <Space>
-                                        {item.status}
-                                    </Space> */}
                                     <Space>
                                         <Button onClick={() => handleDecrease(item.id, item.quantity)}>-</Button>
                                         <span>{item.quantity}</span>
@@ -122,7 +119,6 @@ const ListMenuPage = () => {
                         ))
                     }
                 </div>
-                {/* <div className='flex cursor-pointer rounded-[12px] py-2 px-4 justify-between'> <div>Đơn hàng chưa thanh thoán - {totaldish()} món</div> <div>{totalMoney()} đ</div></div> */}
                 <div className='flex bg-[#fff] cursor-pointer text-[#000816] rounded-[12px] py-2 px-4 justify-between hover:opacity-80' onClick={() => { handleOrder() }}> <div>Đặt hàng - {totaldish()} món</div> <div>{totalMoney()} đ</div></div>
             </div >
         </>

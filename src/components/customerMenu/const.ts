@@ -18,3 +18,27 @@ export function convertDataMenuCustomer(data: any){
     
     return dataConvert;
 }
+
+export function convertDataOrderCustomer(dataOrder: any, dataMenu: any){
+    if(!dataOrder || !Array.isArray(dataOrder) || dataOrder?.length == 0 ) return []
+    if(!dataMenu || !Array.isArray(dataMenu) || dataMenu?.length == 0 ) return []
+
+    const dataOrderCount = dataOrder.map((item: any) => {
+        const itemMenu = dataMenu.find(itemM => itemM?.id === item?.menu_item_id) 
+
+        return {
+            id: item.id,
+            name: itemMenu.name,
+            image_link: itemMenu.image_link,
+            description: itemMenu.description,
+            price: itemMenu.price,
+            priceView: convertMoney(itemMenu.price),
+            category: itemMenu.category,
+            quantity: item.quantity,
+            status: item.status,
+        }   
+    })
+    
+    return dataOrderCount;
+}
+

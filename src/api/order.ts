@@ -15,6 +15,12 @@ export async function postDataOrderItemsByCustomer(payload?: any) {
     return data
 }
 
+export async function getOrderItemByCustomer(params?: any) {
+    const getData = await sendGet(`order/customer`, params)
+    return getData
+}
+
+
 // export async function putDataMenu(payload?: any, id?: any) {
 //     const data = await sendPut(`menu/${id}`, payload)
 //     return data

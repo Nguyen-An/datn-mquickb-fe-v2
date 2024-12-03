@@ -1,22 +1,27 @@
 "use client"
 import { Button, Space } from 'antd';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import "./listOrderPage.scss"
+import { getOrderItemByCustomer } from '@/api/order';
+import { getDataMenuForCustomer } from '@/api/menu';
+import { convertDataOrderCustomer } from '../customerMenu/const';
+import { convertMoney } from '@/constant/until';
 
-const menus = [
-    { id: "1", name: "Bánh chưng", price: 100000, quantity: 0 },
-    { id: "2", name: "Bánh bao", price: 100000, quantity: 1 },
-    { id: "3", name: "Bánh kem", price: 100000, quantity: 2 },
-    { id: "4", name: "Bánh đa", price: 100000, quantity: 3 },
-    { id: "5", name: "Bánh sinh nhật", price: 100000, quantity: 4 },
-    { id: "6", name: "Bánh xe", price: 100000, quantity: 4 },
-    { id: "7", name: "Bánh giò", price: 100000, quantity: 4 },
-    { id: "8", name: "Bánh tét", price: 100000, quantity: 4 },
-]
+interface OrderCustomer {
+    id: any;
+    name: any;
+    image_link: any;
+    description: any;
+    price: any;
+    priceView: any;
+    category: any;
+    quantity: any;
+    status: any;
+}
 
 const ListOrderPage = () => {
-    const [menuList, setMenuList] = useState(menus);
+    const [menuList, setMenuList] = useState<OrderCustomer[]>([]);
 
     const handleDecrease = (id: any, quantity: any) => {
         if (quantity < 0) return;
@@ -41,8 +46,27 @@ const ListOrderPage = () => {
     }
 
     const totalMoney = () => {
-        return menuList.reduce((total: any, item: any) => (total + item.price * item.quantity), 0);
+        return convertMoney(menuList.reduce((total: any, item: any) => (total + item.price * item.quantity), 0));
     }
+
+    const getDataOrderC = async () => {
+        let params = {
+            "page": -1,
+            "page_size": 20
+
+        }
+        try {
+            const dataOrder = await getOrderItemByCustomer(params)
+            const dataMenu = await getDataMenuForCustomer(params)
+            setMenuList(convertDataOrderCustomer(dataOrder?.data?.data, dataMenu?.data?.data))
+        } catch (error) {
+        }
+    }
+
+    useEffect(() => {
+        getDataOrderC()
+    }, [])
+
 
     return (
         <>
@@ -54,25 +78,23 @@ const ListOrderPage = () => {
                             <div className='flex justify-between mb-3' key={index}>
                                 <div className='flex'>
                                     <div className='h-[100px] mr-1'>
-                                        <Image src="https://mquickb.s3.amazonaws.com/5f4dcc77-8e81-4657-be0f-e03b47d63760.jpg" alt="" width={100} height={100} />
+                                        <Image src={item?.image_link} alt="" width={100} height={100} />
                                     </div>
                                     <div className='flex flex-col justify-between'>
                                         <div>{item.name}</div>
-                                        <div>{item.price}</div>
+                                        <div>{convertMoney(item.price)} đ &nbsp; x <span className='bg-[#fff] text-[#000816] rounded-[5px] p-1'>{item.quantity}</span></div>
                                     </div>
                                 </div>
                                 <div className='flex'>
                                     <Space>
-                                        <Button onClick={() => handleDecrease(item.id, item.quantity)}>-</Button>
-                                        <span>{item.quantity}</span>
-                                        <Button onClick={() => handleIncrease(item.id)}>+</Button>
+                                        {item.status}
                                     </Space>
                                 </div>
                             </div>
                         ))
                     }
                 </div>
-                <div className='flex bg-[#fff] cursor-pointer text-[#000816] rounded-[12px] py-2 px-4 justify-between hover:opacity-80'> <div>Đặt hàng - {totaldish()} món</div> <div>{totalMoney()} đ</div></div>
+                <div className='flex cursor-pointer rounded-[12px] py-2 px-4 justify-between'> <div>Đơn hàng chưa thanh thoán - {totaldish()} món</div> <div>{totalMoney()} đ</div></div>
             </div >
         </>
     );
