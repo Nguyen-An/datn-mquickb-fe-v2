@@ -2,7 +2,7 @@
 import { Button, Space } from 'antd';
 import Image from 'next/image';
 import { useState } from 'react';
-import "./listMenuPage.scss"
+import "./listOrderPage.scss"
 
 const menus = [
     { id: "1", name: "Bánh chưng", price: 100000, quantity: 0 },
@@ -15,7 +15,7 @@ const menus = [
     { id: "8", name: "Bánh tét", price: 100000, quantity: 4 },
 ]
 
-const ListMenuPage = () => {
+const ListOrderPage = () => {
     const [menuList, setMenuList] = useState(menus);
 
     const handleDecrease = (id: any, quantity: any) => {
@@ -47,7 +47,7 @@ const ListMenuPage = () => {
     return (
         <>
             <div className='bg-[#000816] text-[#fff]'>
-                <div className='flex justify-center text-[18px] leading-[30px]'>Menu Quán</div>
+                <div className='flex justify-center text-[18px] leading-[30px]'>Đơn hàng của bạn</div>
                 <div className='h-[calc(100vh-150px)] bg-[#000816] rounded-lg shadow-lg overflow-y-auto scrollable-content'>
                     {
                         menuList.map((item, index) => (
@@ -78,4 +78,4 @@ const ListMenuPage = () => {
     );
 };
 
-export default ListMenuPage;
+export default ListOrderPage;

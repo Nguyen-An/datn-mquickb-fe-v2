@@ -5,6 +5,11 @@ export async function getDataM(params?: any) {
     return getData
 }
 
+export async function getDataMenuForCustomer(params?: any) {
+    const getData = await sendGet(`menu/customer`, params)
+    return getData
+}
+
 export async function postDataMenu(payload?: any) {
     const data = await sendPost(`menu`, payload)
     return data

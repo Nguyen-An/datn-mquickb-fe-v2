@@ -34,3 +34,4 @@ export const getLinkQRCode = (qrCode: string) => {
   }
   return "-"
 }
+

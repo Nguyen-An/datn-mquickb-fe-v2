@@ -5,6 +5,11 @@ export async function signin(params?: any) {
     return postsData
 }
 
+export async function signinCustomer(params?: any) {
+    const postsData = await sendPost(`auth/qr`, params)
+    return postsData
+}
+
 export async function getDataU(params?: any) {
     const getData = await sendGet(`users`, params)
     return getData

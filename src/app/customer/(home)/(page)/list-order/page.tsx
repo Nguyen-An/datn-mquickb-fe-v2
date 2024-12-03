@@ -1,4 +1,4 @@
-import ListOrderPage from "@/components/customerMenu/listMenuPage";
+import ListOrderPage from "@/components/listOrder/listOrderPage";
 
 const ListOrderP = () => {
     return (

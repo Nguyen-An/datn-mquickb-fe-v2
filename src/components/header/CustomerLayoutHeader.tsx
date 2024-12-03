@@ -4,6 +4,7 @@ import { Menu, MenuProps } from "antd";
 import { ReactNode, useState } from "react"
 import "./customerLayoutHeader.scss"
 import { useRouter } from "next/navigation";
+import { handleLogout } from "@/constant";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -31,6 +32,10 @@ const CustomerLayoutHeader = ({ }: {}) => {
     const router = useRouter();
 
     const onClick: MenuProps['onClick'] = (e) => {
+        if (e.key == 'logout') {
+            router.push("/customer");
+            handleLogout();
+        }
         console.log('click ', e);
         router.push(`/customer/${e.key}`);
         setCurrent(e.key);

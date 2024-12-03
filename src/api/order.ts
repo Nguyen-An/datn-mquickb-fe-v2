@@ -10,6 +10,11 @@ export async function postDataOrderItems(payload?: any) {
     return data
 }
 
+export async function postDataOrderItemsByCustomer(payload?: any) {
+    const data = await sendPost(`order/customer`, payload)
+    return data
+}
+
 // export async function putDataMenu(payload?: any, id?: any) {
 //     const data = await sendPut(`menu/${id}`, payload)
 //     return data
