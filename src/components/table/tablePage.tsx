@@ -43,7 +43,8 @@ const TablePage = () => {
         setCurrentPage(page);
     }
 
-    const handleCancelModalDetail = () => {
+    const handleCancelModalDetail = (reload?: boolean) => {
+        if (reload) getData(currentPage)
         setIsShowDetail(false)
     }
 
