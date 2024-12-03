@@ -10,6 +10,9 @@ import OrderItemDetailModal from './orderItemDetailModal';
 import OrderItemFormModal from './orderItemFormModal';
 import confirm from 'antd/es/modal/confirm';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { convertDataOrder } from './const';
+import { convertTimeToFormat } from '@/constant/until';
+import { COMMON, getLabelByValue } from '@/constant/common';
 
 interface OrderItems {
     id: any;
@@ -90,7 +93,7 @@ const OrderPage = () => {
         }
         try {
             const data = await getDataOrderItems(params)
-            setDataTable(data?.data?.data)
+            setDataTable(convertDataOrder(data?.data?.data))
             setCurrentPage(data?.data?.current_page)
         } catch (error) {
         }
@@ -131,26 +134,26 @@ const OrderPage = () => {
                             <thead>
                                 <tr>
                                     <th><span>No.</span></th>
-                                    <th className="scroll-header" style={{ minWidth: "180px" }}>Tên món ăn</th>
-                                    <th className="scroll-header" style={{ minWidth: "150px" }}>Tên bàn</th>
+                                    <th className="scroll-header" style={{ minWidth: "180px" }}>Tên bàn</th>
+                                    <th className="scroll-header" style={{ minWidth: "150px" }}>Tên món ăn</th>
                                     {/* <th className="scroll-header" style={{ minWidth: "180px" }}>Tên khách hàng</th> */}
                                     <th className="scroll-header" style={{ width: "150px" }}>Số lượng</th>
-                                    <th className="scroll-header" style={{ minWidth: "150px" }}>Đơn giá</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Trạng thái</th>
+                                    <th className="scroll-header" style={{ minWidth: "150px" }}>Lần cập nhật gần nhất</th>
                                     <th style={{ width: "110px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
                             </thead>
                             <tbody>
                             {(dataTable && dataTable?.length > 0) ? (<>
                                     {
-                                        dataTable.map((item: any, index: any) => (
+                                        dataTable.map((item, index: any) => (
                                             <tr key={index}>
                                                 <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
                                                 <td><div className="text-center">{`Bàn số ${index}`}</div></td>
                                                 <td><div className="text-center">{item?.menu_item_name}</div></td>
                                                 <td><div className="text-center">{item?.quantity}</div></td>
-                                                <td><div className="text-center">{1000000}</div></td>
-                                                <td><div className="text-center">{item?.status}</div></td>
+                                                <td><div className="text-center">{getLabelByValue(COMMON.ORDER_STATUS,item?.status)}</div></td>
+                                                <td><div className="text-center">{convertTimeToFormat(item?.updated_at)}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "110px" }}>
                                                     <div className="flex justify-between">
                                                         <Tooltip title={"detail"}>

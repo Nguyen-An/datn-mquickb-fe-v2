@@ -20,6 +20,11 @@ export async function getOrderItemByCustomer(params?: any) {
     return getData
 }
 
+export async function updateStatusOrderItem(id: any, params?: any) {
+    const getData = await sendPut(`order/order-items/${id}`, params)
+    return getData
+}
+
 
 // export async function putDataMenu(payload?: any, id?: any) {
 //     const data = await sendPut(`menu/${id}`, payload)

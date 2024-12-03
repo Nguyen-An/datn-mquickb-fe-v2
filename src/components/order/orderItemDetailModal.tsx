@@ -3,6 +3,7 @@ import { Modal } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { convertTimeToFormat } from '@/constant/until';
 
 const OrderItemDetailModal: React.FC<{
   isModalOpen: boolean;
@@ -15,22 +16,21 @@ const OrderItemDetailModal: React.FC<{
 
   useEffect(() => {
     setItemData(dataFrom.data)
+    console.log(dataFrom.data);
+    
   }, [dataFrom])
 
   return (
     <>
-      <Modal title="Chi tiết món ăn" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Modal title="Chi tiết đơn hàng" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div className='flex justify-between mt-5'>
           <div className="order-details">
-            <p className='mb-3'><strong>Mã: </strong> {itemData?.id ? itemData?.id : "--"}</p>
-            <p className='mb-3'><strong>Tên món: </strong> {itemData?.name ? itemData?.name : "--"}</p>
-            <p className='mb-3'><strong>Miêu tả: </strong> {itemData?.description ? itemData?.description : "--"}</p>
-            <p className='mb-3'><strong>Loại món: </strong> {itemData?.category ? itemData?.category : "--"}</p>
-            <p className='mb-3'><strong>Trạng thái: </strong> {itemData?.is_available ? "Hoạt động" : "Không hoạt động"}</p>
-            <p className='mb-3'><strong>Thời gian cập nhật: </strong> {itemData?.created_at ? moment(itemData?.created_at).format("DD-MM-YYYY") : "--"} </p>
-          </div>
-          <div className='flex flex-col items-center text-center'>
-            <p><strong>Ảnh:</strong> {itemData?.image_link ? (<Image src={itemData?.image_link} alt="My Image" width={120} height={120} />) : null}</p>
+            <p className='mb-3'><strong>Mã: </strong> {itemData?.id ? `Đơn hàng số ${itemData?.id}` : "--"}</p>
+            {/* <p className='mb-3'><strong>Tên bàn: </strong> {itemData?.menu_item_name ? itemData?.menu_item_name : "--"}</p> */}
+            <p className='mb-3'><strong>Tên món ăn: </strong> {itemData?.menu_item_name ? itemData?.menu_item_name : "--"}</p>
+            <p className='mb-3'><strong>Số lượng: </strong> {itemData?.quantity ? itemData?.quantity : "--"}</p>
+            <p className='mb-3'><strong>Trạng thái: </strong> {itemData?.status}</p>
+            <p className='mb-3'><strong>Lần cập nhật gần nhất: </strong> {itemData?.updated_at ? convertTimeToFormat(itemData?.updated_at) : "--"} </p>
           </div>
         </div>
       </Modal>

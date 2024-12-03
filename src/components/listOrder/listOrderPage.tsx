@@ -7,6 +7,7 @@ import { getOrderItemByCustomer } from '@/api/order';
 import { getDataMenuForCustomer } from '@/api/menu';
 import { convertDataOrderCustomer } from '../customerMenu/const';
 import { convertMoney } from '@/constant/until';
+import { COMMON, getLabelByValue } from '@/constant/common';
 
 interface OrderCustomer {
     id: any;
@@ -87,7 +88,7 @@ const ListOrderPage = () => {
                                 </div>
                                 <div className='flex'>
                                     <Space>
-                                        {item.status}
+                                        {getLabelByValue(COMMON.ORDER_STATUS,item.status)}
                                     </Space>
                                 </div>
                             </div>

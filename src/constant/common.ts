@@ -48,6 +48,14 @@ export const COMMON = {
             value: "manager",
             label: "Quản lý"
         },
+    ],
+    ORDER_STATUS: [
+        { value: 'all', label: 'Tất cả' },
+        { value: 'pending', label: 'Chờ xử lý ' },
+        { value: 'order_received', label: 'Đã nhận đơn' },
+        { value: 'cooking', label: 'Đang nấu' },
+        { value: 'served', label: 'Đã phục vụ' },
+        { value: 'rejected', label: 'Đã từ chối' },
     ]
 }
 
