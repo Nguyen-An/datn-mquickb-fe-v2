@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { convertTimeToFormat } from '@/constant/until';
+import { COMMON, getLabelByValue } from '@/constant/common';
 
 const OrderItemDetailModal: React.FC<{
   isModalOpen: boolean;
@@ -29,7 +30,7 @@ const OrderItemDetailModal: React.FC<{
             {/* <p className='mb-3'><strong>Tên bàn: </strong> {itemData?.menu_item_name ? itemData?.menu_item_name : "--"}</p> */}
             <p className='mb-3'><strong>Tên món ăn: </strong> {itemData?.menu_item_name ? itemData?.menu_item_name : "--"}</p>
             <p className='mb-3'><strong>Số lượng: </strong> {itemData?.quantity ? itemData?.quantity : "--"}</p>
-            <p className='mb-3'><strong>Trạng thái: </strong> {itemData?.status}</p>
+            <p className='mb-3'><strong>Trạng thái: </strong> {getLabelByValue(COMMON.ORDER_STATUS,itemData?.status)}</p>
             <p className='mb-3'><strong>Lần cập nhật gần nhất: </strong> {itemData?.updated_at ? convertTimeToFormat(itemData?.updated_at) : "--"} </p>
           </div>
         </div>

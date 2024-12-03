@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import  './sidebar.scss';
+import './sidebar.scss';
 import { usePathname, useRouter } from "next/navigation";
 import SideBarItem from "./sideBarItem";
 import { FileAddOutlined, FormOutlined, HomeOutlined, MenuOutlined, TableOutlined, UserOutlined, WechatWorkOutlined } from "@ant-design/icons";
 import Avatar from "../avatar/avatar";
+import { jwtDecode } from "jwt-decode";
 
 interface MenuItem {
   icon: any;
@@ -26,48 +27,49 @@ const SideBar = () => {
   const [menu, setMenu] = useState<MenuItem[]>(
     [
       {
-        icon: <HomeOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <HomeOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: 'Doanh thu',
         active: false,
         key: "dashboard",
-        // permissions: [PERMISSIONS.SYSTEM_ADMIN, PERMISSIONS.COMPANY_ADMIN]
+        permissions: ["manager"]
       },
       {
-        icon: <UserOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <UserOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: 'Quản lý nhân viên',
         active: false,
         key: "user",
-        // permissions: [PERMISSIONS.SYSTEM_ADMIN, PERMISSIONS.COMPANY_ADMIN]
+        permissions: ["manager"]
       },
       {
-        icon: <FileAddOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <FileAddOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: 'Quản lý tài liệu',
         active: false,
         key: "document",
-        // permissions: [PERMISSIONS.SYSTEM_ADMIN, PERMISSIONS.COMPANY_ADMIN]
+        permissions: ["manager"]
       },
       {
-        icon: <TableOutlined style={{fontSize: "22px", color: "#fff"}}/>,
-        title:'Quản lý bàn ăn',
+        icon: <TableOutlined style={{ fontSize: "22px", color: "#fff" }} />,
+        title: 'Quản lý bàn ăn',
         active: false,
         key: "table",
-        // permissions: [PERMISSIONS.SYSTEM_ADMIN]
+        permissions: ["manager", "staff"]
       },
       {
-        icon: <MenuOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <MenuOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: "Quản lý menu",
         active: false,
         key: "menu",
+        permissions: ["manager"]
       },
       {
-        icon: <FormOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <FormOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: "Quản lý đơn hàng",
         active: false,
         key: "order",
-        // permissions: [PERMISSIONS.SYSTEM_ADMIN]
+        permissions: ["manager", "staff"]
       },
       {
-        icon: <WechatWorkOutlined style={{fontSize: "22px", color: "#fff"}}/>,
+        icon: <WechatWorkOutlined style={{ fontSize: "22px", color: "#fff" }} />,
         title: "chat_gpt",
         active: false,
         key: "chat",
@@ -94,6 +96,9 @@ const SideBar = () => {
     const item = menu.find((element) => element.key === currentPath);
     const chatItem = menu.find((element) => element.key === "chat");
     setActive(item || chatItem || menu[5]);
+    const token = localStorage?.getItem("token");
+    const user = token ? jwtDecode(token) : null;
+    setUserInfo(user);
   }, [pathname]);
 
 
@@ -108,25 +113,17 @@ const SideBar = () => {
       <div className={`sideBar px-[6px] pb-6 pt-[6px] m-0 flex justify-between flex-col fixed w-[100px] h-screen top-0 left-0 bg-blue-primary`}>
         <ul>
           {menu.map((item, index) => (
-          //   (!item.permissions || item.permissions.includes(userInfo?.role_id)) && !loading ?
-          //     <SideBarItem
-          //       title={item.title}
-          //       icon={item.icon}
-          //       active={item.active}
-          //       link={item.key}
-          //       key={index}
-          //       onClick={() => { handleClickItemMenu(item) }}
-          //     ></SideBarItem>
-          //     : null
-            // )
-            <SideBarItem
+            (!item.permissions || item.permissions.includes(userInfo?.role_id)) ?
+              <SideBarItem
                 title={item.title}
                 icon={item.icon}
                 active={item.active}
                 link={item.key}
                 key={index}
                 onClick={() => { handleClickItemMenu(item) }}
-              ></SideBarItem>)
+              ></SideBarItem>
+              : null
+          )
           )}
         </ul>
         <Avatar size={58} />

@@ -56,6 +56,7 @@ export const COMMON = {
         { value: 'cooking', label: 'Đang nấu' },
         { value: 'served', label: 'Đã phục vụ' },
         { value: 'rejected', label: 'Đã từ chối' },
+        { value: 'paid', label: 'Đã thanh toán' },
     ]
 }
 
