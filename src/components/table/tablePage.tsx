@@ -162,7 +162,7 @@ const TablePage = () => {
                                                 <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
                                                 <td><div className="text-center">{item?.table_name}</div></td>
                                                 <td><div className="text-center">{getLinkQRCode(item?.qr_code)}</div></td>
-                                                <td><div className="text-center"><QRCode size={120} value={item?.qr_code || '-'} /></div></td>
+                                                <td><div className="text-center"><QRCode size={120} value={getLinkQRCode(item?.qr_code) || '-'} /></div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.TABLE_STATUS, item?.status)}</div></td>
                                                 <td><div className="text-center">{moment(item?.updated_at).format("DD-MM-YYYY")}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>

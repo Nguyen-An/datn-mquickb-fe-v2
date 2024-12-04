@@ -20,6 +20,7 @@ interface OrderItems {
     menu_item_id: any;
     quantity: any;
     status: any;
+    name_table: any;
     created_by: any;
     updated_by: any;
     created_at: any;
@@ -149,7 +150,7 @@ const OrderPage = () => {
                                         dataTable.map((item, index: any) => (
                                             <tr key={index}>
                                                 <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
-                                                <td><div className="text-center">{`Bàn số ${index}`}</div></td>
+                                                <td><div className="text-center">{item?.name_table ?? "--"}</div></td>
                                                 <td><div className="text-center">{item?.menu_item_name}</div></td>
                                                 <td><div className="text-center">{item?.quantity}</div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.ORDER_STATUS,item?.status)}</div></td>

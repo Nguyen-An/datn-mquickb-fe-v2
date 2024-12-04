@@ -10,6 +10,7 @@ export function convertDataOrder(data: any){
             menu_item_id: item.menu_item_id,
             quantity: item.quantity,
             status: item.status,
+            name_table: item.name_table,
             created_by: item.created_by,
             updated_by: item.updated_by,
             created_at: item.created_at,
