@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 const getAPIURL = (path: string) => {
-    return `${process.env.API_URL || 'http://localhost:8000/'}${path}`;
+    return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/'}${path}`;
 };
 
 // const instance = axios.create({
@@ -9,7 +9,7 @@ const getAPIURL = (path: string) => {
 // });
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: process.env.NEXT_PUBLIC_API_UR || 'http://localhost:8000/',
 });
 
 // Thay thế `any` bằng `unknown` hoặc các kiểu cụ thể hơn
