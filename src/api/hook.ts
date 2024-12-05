@@ -9,7 +9,7 @@ const getAPIURL = (path: string) => {
 // });
 
 const instance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_UR || 'http://localhost:8000/',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/',
 });
 
 // Thay thế `any` bằng `unknown` hoặc các kiểu cụ thể hơn
