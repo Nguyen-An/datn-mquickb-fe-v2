@@ -24,6 +24,9 @@ const CustomerLogin = () => {
         //     // Tiến hành xử lý đăng nhập, ví dụ: gửi request tới API
         //     console.log('Đăng nhập với', { username, password });
         // }
+
+        
+
         let userI = {
             "email": '',
             "name": '',

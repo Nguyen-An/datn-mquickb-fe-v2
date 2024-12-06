@@ -1,6 +1,7 @@
 import CustomerLogin from "@/components/customerLogin/customerLogin";
 
-const LoginqrPage = () => {
+const LoginqrPage = ({params}: any) => {
+ const id = params.id
   return (<CustomerLogin/>)
 };
 
