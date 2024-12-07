@@ -1,12 +1,12 @@
-const ChatPage = () => {
+import ChatPage from "@/components/chat/chat";
+
+const ChatP = () => {
 
     return (
         <>
-            <div>
-            ChatPage
-            </div>
+            <ChatPage></ChatPage>
         </>
     )
 };
 
-export default ChatPage;
+export default ChatP;
