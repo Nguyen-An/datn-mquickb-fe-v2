@@ -26,7 +26,6 @@ const TablePage = () => {
     const srcIconDelete = icon['iconDelete']
     const srcIconEdit = icon['iconEdit']
     const srcIconView = icon['iconView']
-    const [text, setText] = React.useState('https://ant.design/');
     const [isShowDetail, setIsShowDetail] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
     const [dataFrom, setDataFrom] = useState<DataFrom>({

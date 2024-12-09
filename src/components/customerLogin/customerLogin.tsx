@@ -5,12 +5,12 @@ import { notification, Tabs, TabsProps } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const CustomerLogin = () => {
+const CustomerLogin = ({qrCodeParam} : any) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [qrCode, setQrCode] = useState('');
+    const [qrCode, setQrCode] = useState(qrCodeParam ?? '');
     const router = useRouter()
 
     const handleSubmit = async (e: any, mode: any) => {
@@ -24,6 +24,9 @@ const CustomerLogin = () => {
         //     // Tiến hành xử lý đăng nhập, ví dụ: gửi request tới API
         //     console.log('Đăng nhập với', { username, password });
         // }
+
+        
+
         let userI = {
             "email": '',
             "name": '',

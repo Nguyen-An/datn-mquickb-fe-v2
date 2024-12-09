@@ -16,9 +16,12 @@ const Authentication = () => {
         instance.interceptors.request.use(
             function (config) {
                 setApis((value) => ++value)
-                const accessToken = localStorage.getItem('token');
-                const urlsNoAuth = ['/auth']
-                if (config.url && !urlsNoAuth.includes(config.url)) config.headers.Authorization = `Bearer ${accessToken ? accessToken : ''}` as string
+                // const accessToken = localStorage.getItem('token');
+                // if(accessToken) {
+                //     config.headers.Authorization = `Bearer ${accessToken ? accessToken : ''}` as string
+                // }
+                // const urlsNoAuth = ['/auth']
+                // if (config.url && !urlsNoAuth.includes(config.url)) config.headers.Authorization = `Bearer ${accessToken ? accessToken : ''}` as string
                 return config
             },
 

@@ -12,6 +12,22 @@ const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/',
 });
 
+instance.interceptors.request.use(
+    function (config) {
+        const accessToken = localStorage.getItem('token');
+        if(accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken ? accessToken : ''}` as string
+        }
+        // const urlsNoAuth = ['/auth']
+        // if (config.url && !urlsNoAuth.includes(config.url)) config.headers.Authorization = `Bearer ${accessToken ? accessToken : ''}` as string
+        return config
+    },
+
+    function (error) {
+        return Promise.reject(error)
+    }
+)
+
 // Thay thế `any` bằng `unknown` hoặc các kiểu cụ thể hơn
 const sendGet = (url: string, params?: Record<string, unknown>) => instance.get(url, { params });
 
