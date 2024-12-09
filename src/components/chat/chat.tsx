@@ -8,6 +8,7 @@ const SOCKET_SERVER_URL = "http://localhost:8000";
 let msgCurent = ""
 const ChatPage = () => {
     const [socket, setSocket] = useState<any>(null);
+    const [testText, setTestText] = useState<any>("");
     const [messages, setMessages] = useState<string[]>([]);
     const [contentMessages, setContentMessages] = useState<any[]>([]);
     const [isLoadAnswer, setIsLoadAnswer] = useState<boolean>(false); // dùng để disable btn chat khi câu trả lời đang được ren
@@ -35,17 +36,17 @@ const ChatPage = () => {
             if (data?.type === 'START') msgCurent = ""
 
             msgCurent = `${msgCurent}${data?.value}`
-            
+
             if (data?.type === 'EOS') {
                 // newMessages.push(msgCurent);
-                setContentMessages((prevMessages) =>{
+                setContentMessages((prevMessages) => {
                     let newListMsg = [...prevMessages]
-                    newListMsg.push(msgCurent);
-                    console.log("newListMsg: ", newListMsg);
-                    console.log("msgCurent: ", msgCurent);
-                    
+                    newListMsg.push({
+                        role: 'bot',
+                        message: msgCurent
+                    });
                     return newListMsg
-                } );
+                });
 
                 setIsLoadAnswer(false)
             }
@@ -60,21 +61,26 @@ const ChatPage = () => {
         if (!inputMessage.trim()) return;
 
         const messageData = {
-            thread_id: "thread_GH2K75yxRy5kCR5qLflvGdkc",
+            thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
             message: inputMessage,
         };
 
         socket.emit("message", messageData);
+
+        setContentMessages((prevMessages) => {
+            let newListMsg = [...prevMessages]
+            newListMsg.push({
+                role: 'user',
+                message: inputMessage
+            });
+            return newListMsg
+        });
+
         setInputMessage("");
     };
 
-    const loggggg = () => {
-        console.log("contentMessages: ", contentMessages);
-        console.log("msgCurent: ", msgCurent);
-    }
-
     return (
-        <div className="flex flex-col h-[500px] p-4 bg-gray-100">
+        <div className="flex flex-col h-[calc(100vh-75px)] p-4 bg-gray-100">
             <div className="flex-1 overflow-y-auto bg-white shadow-md rounded-md p-4 mb-4">
                 {contentMessages.map((message, index) => (
                     <div
@@ -101,7 +107,12 @@ const ChatPage = () => {
                             }
 
                         </div> */}
-                        {message} <br /> <br />
+                        <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''}`}>
+                            <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''} w-[calc(100%-100px)]`}>
+                                <div className="bg-[#ccc] p-2 rounded-[10px]">{message?.message}</div>
+                            </div>
+                        </div>
+                        <br />
                     </div>
                 ))}
             </div>
@@ -119,9 +130,6 @@ const ChatPage = () => {
                 >
                     Gửi
                 </button>
-            </div>
-            <div onClick={() => loggggg()}>
-                Logg
             </div>
         </div>
     );

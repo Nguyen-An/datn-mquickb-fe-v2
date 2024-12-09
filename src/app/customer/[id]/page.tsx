@@ -1,8 +1,9 @@
 import CustomerLogin from "@/components/customerLogin/customerLogin";
 
 const LoginqrPage = ({params}: any) => {
- const id = params.id
-  return (<CustomerLogin/>)
+ const qrCodeParam = params.id
+
+  return (<CustomerLogin qrCodeParam={qrCodeParam}/>)
 };
 
 export default LoginqrPage;
