@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Markdown from 'react-markdown';
+import { Spin } from "antd";
 
 const SOCKET_SERVER_URL = "http://localhost:8000";
 let msgCurent = ""
@@ -33,7 +34,9 @@ const ChatPage = () => {
                 return;
             }
             const data = JSON.parse(jsonString);
-            if (data?.type === 'START') msgCurent = ""
+            if (data?.type === 'START') {
+                msgCurent = ""
+            }
 
             msgCurent = `${msgCurent}${data?.value}`
 
@@ -64,7 +67,7 @@ const ChatPage = () => {
             thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
             message: inputMessage,
         };
-
+        setIsLoadAnswer(true)
         socket.emit("message", messageData);
 
         setContentMessages((prevMessages) => {
@@ -81,6 +84,7 @@ const ChatPage = () => {
 
     return (
         <div className="flex flex-col h-[calc(100vh-75px)] p-4 bg-gray-100">
+            <Spin spinning={isLoadAnswer} size='large' fullscreen />
             <div className="flex-1 overflow-y-auto bg-white shadow-md rounded-md p-4 mb-4">
                 {contentMessages.map((message, index) => (
                     <div
@@ -105,7 +109,6 @@ const ChatPage = () => {
                                         {message.text}
                                     </Markdown>
                             }
-
                         </div> */}
                         <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''}`}>
                             <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''} w-[calc(100%-100px)]`}>
