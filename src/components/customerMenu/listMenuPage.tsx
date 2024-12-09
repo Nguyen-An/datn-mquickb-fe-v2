@@ -7,6 +7,7 @@ import { getDataMenuForCustomer } from '@/api/menu';
 import { convertDataMenuCustomer } from './const';
 import { convertMoney } from '@/constant/until';
 import { postDataOrderItemsByCustomer } from '@/api/order';
+import { useRouter } from 'next/navigation';
 
 interface MenuCustomer {
     id: any;
@@ -21,6 +22,7 @@ interface MenuCustomer {
 
 const ListMenuPage = () => {
     const [menuList, setMenuList] = useState<MenuCustomer[]>([]);
+    const router = useRouter();
 
     const handleDecrease = (id: any, quantity: any) => {
         if (quantity < 0) return;
@@ -82,6 +84,8 @@ const ListMenuPage = () => {
             notification["success"]({
                 message: `Đặt món thành công!`,
             });
+
+            router.push("/customer/list-order");
             
         } catch (error) {
             notification["error"]({

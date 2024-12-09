@@ -57,7 +57,12 @@ export const COMMON = {
         { value: 'served', label: 'Đã phục vụ' },
         { value: 'rejected', label: 'Đã từ chối' },
         { value: 'paid', label: 'Đã thanh toán' },
-    ]
+    ],
+    STAFF_CALLS: [
+        { value: 'pending', label: 'Đang chờ' },
+        { value: 'in_progress', label: 'Đang trong xử lý' },
+        { value: 'completed', label: 'Hoàn thành' },
+    ],
 }
 
 export const getLabelByValue = (ARR: any, value: any) => {

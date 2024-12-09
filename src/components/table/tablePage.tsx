@@ -13,6 +13,7 @@ import TableFormModal from './tableFormModal';
 import moment from 'moment';
 import { COMMON, getLabelByValue } from '@/constant/common';
 import { getLinkQRCode } from '@/constant';
+import StaffCallModal from './staffCallModal';
 interface Table {
     id: any;
     qr_code: any;
@@ -27,7 +28,9 @@ const TablePage = () => {
     const srcIconEdit = icon['iconEdit']
     const srcIconView = icon['iconView']
     const [isShowDetail, setIsShowDetail] = useState(false)
+    const [isShowStaffCall, setIsShowStaffCall] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
+    const [dataInfotable, setDataInfotable] = useState(null)
     const [dataFrom, setDataFrom] = useState<DataFrom>({
         mode: "detail",
         data: {}
@@ -49,6 +52,15 @@ const TablePage = () => {
 
     const handleOkModalDetail = () => {
         setIsShowDetail(false)
+    }
+
+    const handleCancelModalStaffCall = (reload?: boolean) => {
+        if (reload) getData(currentPage)
+        setIsShowStaffCall(false)
+    }
+
+    const handleOkModalStaffCall = () => {
+        setIsShowStaffCall(false)
     }
 
     const getData = async (page: number) => {
@@ -89,6 +101,11 @@ const TablePage = () => {
         }
 
         setDataFrom(data)
+    }
+
+    const showModalStaffCall = (item: any) => {
+        setDataInfotable(item)
+        setIsShowStaffCall(true)
     }
 
     const showDeleteConfirm = (item: any) => {
@@ -148,8 +165,8 @@ const TablePage = () => {
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Tên bàn ăn</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Link QR code</th>
                                     <th className="scroll-header" style={{ width: "120px" }}>Mã QR code</th>
-                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái</th>
-                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Cập nhật lúc</th>
+                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái bàn ăn</th>
+                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái khách hàng</th>
                                     <th style={{ width: "170px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
                             </thead>
@@ -163,7 +180,15 @@ const TablePage = () => {
                                                 <td><div className="text-center">{getLinkQRCode(item?.qr_code)}</div></td>
                                                 <td><div className="text-center"><QRCode size={120} value={getLinkQRCode(item?.qr_code) || '-'} /></div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.TABLE_STATUS, item?.status)}</div></td>
-                                                <td><div className="text-center">{moment(item?.updated_at).format("DD-MM-YYYY")}</div></td>
+                                                <td>
+                                                    {
+                                                        item?.order_id ? 
+                                                        <div className="text-center">
+                                                            <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#c48034] px-6 py-2' onClick={() => showModalStaffCall(item)}>Xem yêu cầu</button>
+                                                        </div> 
+                                                        : <></>
+                                                    }
+                                                </td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">
                                                         <Tooltip title={"detail"}>
@@ -189,6 +214,7 @@ const TablePage = () => {
                         <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowDetail ? (<TableDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></TableDetailModal>) : null}
+                    {isShowStaffCall ? (<StaffCallModal isModalOpen={isShowStaffCall} dataFrom={dataInfotable} handleCancel={handleCancelModalStaffCall} handleOk={handleOkModalStaffCall}></StaffCallModal>) : null}
                     {isShowForm ? (<TableFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></TableFormModal>) : null}
                 </div>
             </div>
