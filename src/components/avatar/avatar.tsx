@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import ProfileForm, { UserFormData } from './ProfileForm';
 import { handleLogout } from '@/constant';
 import ChangePasswordForm from './changePasswordForm';
+import AvatarComon from './avatarComon';
 
 export default function Avatar({ size }: { size: number }) {
     const srcIconViewProfile = icon['iconViewProfile']
@@ -40,21 +41,21 @@ export default function Avatar({ size }: { size: number }) {
         setOpenProfileForm(true);
     }
     const items: MenuProps['items'] = [
-        {
-            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('view')}><Image src={srcIconViewProfile} alt="" width={20} height={20} /> Xem thông tin cá nhân</div>,
-            key: '0',
-        },
-        {
-            label: <div className="outlineDropdownItem" onClick={() => openModalProfile('create')}><Image src={srcIconEditProfile} alt="" width={20} height={20} />Chỉnh sửa thông tin cá nhân</div>,
-            key: '1',
-        },
-        {
-            label: <div className="outlineDropdownItem" onClick={() => openModalChangePassword()}><Image src={srcIconChangePassword} alt="" width={20} height={20} />Đổi mật khẩu</div>,
-            key: '2',
-        },
-        {
-            type: 'divider',
-        },
+        // {
+        //     label: <div className="outlineDropdownItem" onClick={() => openModalProfile('view')}><Image src={srcIconViewProfile} alt="" width={20} height={20} /> Xem thông tin cá nhân</div>,
+        //     key: '0',
+        // },
+        // {
+        //     label: <div className="outlineDropdownItem" onClick={() => openModalProfile('create')}><Image src={srcIconEditProfile} alt="" width={20} height={20} />Chỉnh sửa thông tin cá nhân</div>,
+        //     key: '1',
+        // },
+        // {
+        //     label: <div className="outlineDropdownItem" onClick={() => openModalChangePassword()}><Image src={srcIconChangePassword} alt="" width={20} height={20} />Đổi mật khẩu</div>,
+        //     key: '2',
+        // },
+        // {
+        //     type: 'divider',
+        // },
         {
             label: <div className="outlineDropdownItem" onClick={() => handleSignOut()}><Image src={srcIconSignOut} alt="" width={20} height={20} />Đăng xuất</div>,
             key: '4',
@@ -85,8 +86,7 @@ export default function Avatar({ size }: { size: number }) {
                 <Dropdown className="outLineAvatar" menu={{ items }} placement="topRight" trigger={['click']} arrow>
                     <a onClick={(e) => e.preventDefault()}>
                         <Space>
-                            {/* <AvatarComon srcImg={user.link_avatar} email={userInfo?.email} width={`${size}px`} height={`${size}px`} fontSize={`${Math.floor(size / 1.6)}px`} /> */}
-                            Avatar
+                            <AvatarComon email={userInfo?.name} width={`${size}px`} height={`${size}px`} fontSize={`${Math.floor(size / 1.6)}px`} />
                         </Space>
                     </a>
                 </Dropdown>

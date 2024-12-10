@@ -73,10 +73,6 @@ const TablePage = () => {
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
         } catch (error) {
-            // notification.open({
-            //     message: 'Đã có lỗi xả ra khi lấy dữ liệu!',
-            //     type: 'error'
-            // });
         }
     }
 

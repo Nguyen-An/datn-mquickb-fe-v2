@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { getLinkQRCode } from '@/constant';
 import { COMMON, getLabelByValue } from '@/constant/common';
-import { payTable } from '@/api/order';
+import { getStaffCallByOrderId, payTable } from '@/api/order';
 import { AnyNode } from 'postcss';
+import { formatTimeDifference } from '@/constant/until';
 
 const StaffCallModal: React.FC<{
   isModalOpen: boolean;
@@ -14,30 +15,35 @@ const StaffCallModal: React.FC<{
   handleCancel: (reload?: boolean) => void;
   handleOk: () => void;
 }> = ({ isModalOpen, dataFrom, handleCancel, handleOk }) => {
-  const [status, setStatus] = useState(null)
-
-  const handleChange = (value: any) => {
-    setStatus(value)
-  }
+  const [dataStaffCall, setDataStaffCall] = useState([])
 
   useEffect(() => {
-    setStatus(dataFrom?.staff_calls_status)
+    getData(dataFrom?.order_id)
   }, [dataFrom])
-  
+
+  const getData = async (orderId: any) => {
+    let params = {
+      "page": -1,
+      "page_size": 9999
+    }
+    try {
+      const data = await getStaffCallByOrderId(orderId, params)
+      setDataStaffCall(data?.data?.data);
+    } catch (error) {
+    }
+  }
+
   return (
     <>
       <Modal title="Yêu cầu từ khách hàng" centered open={isModalOpen} onOk={handleOk} onCancel={() => handleCancel(false)} footer={null}>
-        <div className='flex justify-between mt-5'>
-          <div className="order-details">
-            <p className='mb-3'><strong>Ghi chú: </strong> Lấy cho a 2 lý cafe em ơi</p>
-            <Select
-              placeholder="Chọn trạng thái"
-              style={{ width: "100%" }}
-              options={COMMON.STAFF_CALLS}
-              value={status}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="h-[300px] overflow-auto scrollable-content mt-5">
+          {(dataStaffCall && dataStaffCall.length > 0) ?
+            dataStaffCall.map((item: any, index: any) =>
+            (<div className="mb-3" key={index}>
+              <div> {item?.reason} </div>
+              <div className="text-[#614848] text-[12px] flex flex-row-reverse"><div>{formatTimeDifference(item?.created_at)}</div></div>
+            </div>)
+            ) : (<div className='text-center'>Không có yêu cầu gì</div>)}
         </div>
       </Modal>
     </>
