@@ -40,3 +40,13 @@ export async function getDataDashboardRevenue(params?: any) {
     const getData = await sendGet(`order/dashboard/revenue`, params)
     return getData
 }
+
+export async function getStaffCallByOrderId(orderId:any, params?: any) {
+    const getData = await sendGet(`order/staff-call/${orderId}`, params)
+    return getData
+}
+
+export async function postStaffCall(payload?: any) {
+    const data = await sendPost(`order/staff-call`, payload)
+    return data
+}

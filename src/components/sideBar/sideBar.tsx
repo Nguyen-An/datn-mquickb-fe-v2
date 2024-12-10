@@ -66,7 +66,7 @@ const SideBar = () => {
         title: "Quản lý đơn hàng",
         active: false,
         key: "order",
-        permissions: ["manager", "staff"]
+        permissions: ["staff"]
       },
       {
         icon: <WechatWorkOutlined style={{ fontSize: "22px", color: "#fff" }} />,

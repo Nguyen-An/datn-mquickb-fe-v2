@@ -72,13 +72,11 @@ const AvatarComon = ({
   width = "58px",
   height = "58px",
   fontSize = "30px",
-  srcImg = null
 }: {
   email: any,
   width: any,
   height: any,
   fontSize: any,
-  srcImg: any,
 }) => {
   function convertPxToNumber(pxValue: any) {
     // Sử dụng parseInt để chuyển đổi chuỗi sang số
@@ -87,22 +85,9 @@ const AvatarComon = ({
 
   return (
     <>
-      {srcImg ? (
-        <div className={`w-[${width}] h-[${height}] m-[5px] flex justify-center items-center overflow-hidden rounded-full object-contain`}>
-          <div className="flex" style={{width: `${width}`, height: `${height}`}}>
-            <Image
-              className="image"
-              src={srcImg}
-              alt={"avatar"}
-              width={convertPxToNumber(width)}
-              height={convertPxToNumber(height)}
-            />
-          </div>
-        </div>
-      ) : (<div className="m-[5px] rounded-full flex justify-center" style={{ background: getRandomColor(email), width, height }}>
+      <div className="m-[5px] rounded-full flex justify-center" style={{ background: getRandomColor(email), width, height }}>
         <div className="text-white text-[30px] font-medium" style={{ lineHeight: height, fontSize: fontSize }}>{email[0].toUpperCase()}</div>
-      </div>)}
-
+      </div>
     </>
   )
 };

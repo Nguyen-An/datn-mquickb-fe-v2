@@ -35,10 +35,10 @@ const CustomerLayoutHeader = ({ }: {}) => {
         if (e.key == 'logout') {
             router.push("/customer");
             handleLogout();
+        } else {
+            router.push(`/customer/${e.key}`);
+            setCurrent(e.key);
         }
-        console.log('click ', e);
-        router.push(`/customer/${e.key}`);
-        setCurrent(e.key);
     };
     return (
         <>

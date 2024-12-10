@@ -128,7 +128,9 @@ const OrderPage = () => {
                                     ]}
                                 /></div>
                         </div>
-                        <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2'>Thêm mới</button></div>
+                        <div>
+                            <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2'>Thêm mới</button>
+                        </div>
                     </div>
                     <div className='app-table-outline'>
                         <table className="app-table">
