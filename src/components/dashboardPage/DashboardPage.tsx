@@ -64,12 +64,12 @@ const DashboardPage = () => {
             {
                 name: 'Doanh thu',
                 type: 'column', // Biểu đồ cột
-                data: totalOrders, // Dữ liệu doanh thu
+                data: totalRevenue, // Dữ liệu doanh thu
             },
             {
                 name: 'Số đơn hàng',
                 type: 'line', // Biểu đồ line
-                data: totalRevenue, // Dữ liệu số đơn hàng cho mỗi tháng
+                data: totalOrders, // Dữ liệu số đơn hàng cho mỗi tháng
                 yAxis: 1, // Chỉ định sử dụng trục Y thứ hai cho số đơn hàng
                 marker: {
                     enabled: true, // Hiển thị điểm dữ liệu trên line
