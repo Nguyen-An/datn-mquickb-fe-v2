@@ -10,6 +10,7 @@ import { DataFrom } from '@/lib/interface';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { deleteMenuItem, getDataM } from '@/api/menu';
 import { deleteTable } from '@/api/table';
+import { convertMoney } from '@/constant/until';
 
 const { confirm } = Modal;
 
@@ -161,7 +162,7 @@ const MenuPage = () => {
                                                 <td><div className="text-center">{item?.description}</div></td>
                                                 <td><div className="text-center"><Image src={item?.image_link} alt="" width={120} height={120} /></div></td>
                                                 <td><div className="text-center">{item?.category}</div></td>
-                                                <td><div className="text-center">{item?.price}</div></td>
+                                                <td><div className="text-center">{convertMoney(item?.price)}</div></td>
                                                 <td><div className="text-center">{item?.is_available ? "Hoạt động" : "Không hoạt động"}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">
