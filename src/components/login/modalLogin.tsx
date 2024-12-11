@@ -106,29 +106,30 @@ const ModalLogin = ({
                 </Form.Item>
             </Form>
         } else if (type === 'client') {
-            return <Form
-                layout={'vertical'}
-                name="clientForm"
-                initialValues={{ remember: true }}
-                onFinish={onFinishLoginClient}
-                autoComplete="off"
-            >
-                <Form.Item<FieldTypeClient>
-                    label="Tên đăng nhập"
-                    name="clientname"
-                    rules={[{ required: true, message: 'Tên đăng nhập không được để trống' }]}
-                >
-                    <Input />
-                </Form.Item>
+            return (<div>Tính năng đang được phát triển!</div>)
+            // return <Form
+            //     layout={'vertical'}
+            //     name="clientForm"
+            //     initialValues={{ remember: true }}
+            //     onFinish={onFinishLoginClient}
+            //     autoComplete="off"
+            // >
+            //     <Form.Item<FieldTypeClient>
+            //         label="Tên đăng nhập"
+            //         name="clientname"
+            //         rules={[{ required: true, message: 'Tên đăng nhập không được để trống' }]}
+            //     >
+            //         <Input />
+            //     </Form.Item>
 
-                <Form.Item label={null}>
-                    <div className='flex justify-center'>
-                        <Button type="primary" htmlType="submit">
-                            Đăng nhập
-                        </Button>
-                    </div>
-                </Form.Item>
-            </Form>
+            //     <Form.Item label={null}>
+            //         <div className='flex justify-center'>
+            //             <Button type="primary" htmlType="submit">
+            //                 Đăng nhập
+            //             </Button>
+            //         </div>
+            //     </Form.Item>
+            // </Form>
         }
     }
 
