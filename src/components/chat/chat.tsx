@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import Markdown from 'react-markdown';
 import { Spin } from "antd";
 
-const SOCKET_SERVER_URL = "http://localhost:8000";
+const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 let msgCurent = ""
 const ChatPage = () => {
     const [socket, setSocket] = useState<any>(null);

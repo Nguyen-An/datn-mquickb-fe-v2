@@ -19,7 +19,7 @@ const UserDetailModal: React.FC<{
 
   return (
     <>
-      <Modal title="Chi tiết món ăn" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Modal title="Chi tiết người dùng" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <div className='flex justify-between mt-5'>
           <div className="order-details">
             <p className='mb-3'><strong>Mã: </strong> {itemData?.id ? itemData?.id : "--"}</p>
