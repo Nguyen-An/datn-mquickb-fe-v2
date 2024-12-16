@@ -84,22 +84,24 @@ const UserFormModal: React.FC<{
                         form={form}
                         style={{ width: "100%" }}
                     >
-                        <Form.Item name="name" label="Tên người dùng">
+                        <Form.Item name="name" label="Tên người dùng" rules={[{ required: true, message: 'Tên người dùng không được phép trống' }]}>
                             <Input placeholder="Nhập tên người dùng" />
                         </Form.Item>
-                        <Form.Item name="email" label="Email">
+                        <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Email không được phép trống' }]}>
                             <Input placeholder="Nhập email" />
                         </Form.Item>
-                        <Form.Item label="Role">
+                        <Form.Item name="role" label="Role" rules={[{ required: true, message: 'Role không được phép trống' }]}>
                             <Select
-                                placeholder="Chọn trạng thái"
+                                placeholder="Chọn role"
                                 style={{ width: "100%" }}
                                 options={COMMON.ROLE}
                                 value={role}
                                 onChange={handleChange}
+                            
+                                disabled={dataFrom.mode === 'edit'}
                             />
                         </Form.Item>
-                        <Form.Item name="phone_number" label="Số điện thoại">
+                        <Form.Item name="phone_number" label="Số điện thoại" rules={[{ required: true, message: 'Số điện thoại không được phép trống' }]}>
                             <Input placeholder="Nhập số điện thoại" />
                         </Form.Item>
                     </Form>

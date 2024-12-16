@@ -49,7 +49,7 @@ const TableDetailModal: React.FC<{
           <div className='flex flex-col items-center text-center'>
             <p><strong>Ảnh:</strong> {itemData?.qr_code ? (<QRCode size={120} value={getLinkQRCode(itemData?.qr_code)} />) : null}</p>
             {
-              (itemData?.status == 'in_use') ? <Button type="dashed" className='mt-2' onClick={() => handlePay()}>Thanh toán</Button> : <></>
+              (itemData?.status == 'in_use' || itemData?.order_id) ? <Button type="dashed" className='mt-2' onClick={() => handlePay()}>Thanh toán</Button> : <></>
             }
           </div>
         </div>

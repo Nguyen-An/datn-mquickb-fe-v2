@@ -26,7 +26,7 @@ const TableFormModal: React.FC<{
             setTitle("Chỉnh sửa bàn ăn")
             form.setFieldsValue({
                 "table_name": dataFrom.data?.table_name ?? "",
-                "qr_code": dataFrom.data?.qr_code ?? "", 
+                "qr_code": dataFrom.data?.qr_code ?? "",
             })
             setStatus(dataFrom.data?.status)
             setQrCode(dataFrom.data?.qr_code)
@@ -89,18 +89,20 @@ const TableFormModal: React.FC<{
                         form={form}
                         style={{ width: "100%" }}
                     >
-                        <Form.Item name="table_name" label="Tên bàn ăn">
+                        <Form.Item name="table_name" label="Tên bàn ăn" rules={[{ required: true, message: 'Tên bàn ăn không được phép trống' }]}>
                             <Input placeholder="Nhập tên bàn ăn" />
                         </Form.Item>
-                        <Select
-                            className='mb-3'
-                            placeholder="Chọn trạng thái"
-                            style={{ width: "100%" }}
-                            options={COMMON.TABLE_STATUS}
-                            value={status}
-                            onChange={handleChange}
-                        />
-                        <Form.Item name="qr_code" label="Link QR Code">
+                        <Form.Item name="status" label="Trạng thái bàn" rules={[{ required: true, message: 'Trạng thái bàn không được phép trống' }]}>
+                            <Select
+                                placeholder="Chọn trạng thái"
+                                style={{ width: "100%" }}
+                                options={COMMON.TABLE_STATUS}
+                                value={status}
+                                onChange={handleChange}
+                            />
+                        </Form.Item>
+
+                        <Form.Item name="qr_code" label="Link QR Code" rules={[{ required: true, message: 'Mã QR code không được phép trống' }]}>
                             <Input placeholder="" disabled={true} />
                         </Form.Item>
                         <button className='bg-blue-500 hover:bg-blue-700 text-white py-1 px-5 rounded' onClick={() => changeQRCode()}>Đổi mã</button>

@@ -90,7 +90,7 @@ const UserPage = () => {
                     await deleteUser(item.id)
                     notification.open({
                         message: 'Xóa user thành công!',
-                        type:'success'
+                        type: 'success'
                     });
                     getDataUser(currentPage)
                 } catch (error) {
@@ -114,7 +114,7 @@ const UserPage = () => {
         setIsShowDetail(false)
     }
     const handleCancelForm = (reload?: boolean) => {
-        if(reload) getDataUser(currentPage)
+        if (reload) getDataUser(currentPage)
         setIsShowForm(false)
     }
 
@@ -162,9 +162,9 @@ const UserPage = () => {
                                                         <Tooltip title={"detail"}>
                                                             <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"edit"}>
+                                                        {(item?.role != "customer_qr") && (<Tooltip title={"edit"}>
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
-                                                        </Tooltip>
+                                                        </Tooltip>)}
                                                         <Tooltip title={"delete"}>
                                                             <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>

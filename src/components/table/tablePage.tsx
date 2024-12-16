@@ -178,7 +178,7 @@ const TablePage = () => {
                                                 <td><div className="text-center">{getLabelByValue(COMMON.TABLE_STATUS, item?.status)}</div></td>
                                                 <td>
                                                     {
-                                                        item?.order_id ? 
+                                                        (item?.order_id && item?.status == 'in_use') ? 
                                                         <div className="text-center">
                                                             <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#c48034] px-6 py-2' onClick={() => showModalStaffCall(item)}>Xem yêu cầu</button>
                                                         </div> 
