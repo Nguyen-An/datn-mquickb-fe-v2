@@ -22,6 +22,10 @@ const items: MenuItem[] = [
         key: 'staff-calls',
     },
     {
+        label: 'Chat',
+        key: 'chat',
+    },
+    {
         label: "Đăng xuất",
         key: 'logout',
     },
@@ -43,7 +47,7 @@ const CustomerLayoutHeader = ({ }: {}) => {
     return (
         <>
             <div className="customer-header text-[#fff]">
-                <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+                <Menu overflowedIndicator={<><div className="text[#fff]">mở</div></>} onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
             </div>
             <div className="h-[1px] bg-[#ccc] mb-1"></div>
         </>
