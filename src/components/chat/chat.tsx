@@ -10,11 +10,15 @@ const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8
 const ChatPage = () => {
     const [socket, setSocket] = useState<any>(null);
     const [testText, setTestText] = useState<any>("");
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     // const [messages, setMessages] = useState<string[]>([]);
     const messageCurrentRef = useRef("")
     const [contentMessages, setContentMessages] = useState<any[]>([]);
     const [isLoadAnswer, setIsLoadAnswer] = useState<boolean>(false); // dùng để disable btn chat khi câu trả lời đang được ren
     const [inputMessage, setInputMessage] = useState<string>("");
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    };
 
     useEffect(() => {
         const socket = io(SOCKET_SERVER_URL, {
@@ -64,6 +68,10 @@ const ChatPage = () => {
         };
     }, []);
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [contentMessages, testText]);
+
     const sendChat = () => {
         if (!inputMessage.trim()) return;
 
@@ -104,18 +112,13 @@ const ChatPage = () => {
                                 {/* <img src={avatarLogo.src} alt="logo" /> */}
                             </div>
                         }
-                        {/* <div className="content-chat">
-                            {
-                                index == contentMessages.length - 1 && message.person === 'assistant' ?
-                                    <span className="loading">.....</span> :
-                                    <Markdown>
-                                        {message.text}
-                                    </Markdown>
-                            }
-                        </div> */}
                         <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''}`}>
                             <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''} w-[calc(100%-100px)]`}>
-                                <div className="bg-[#ccc] p-2 rounded-[10px]">{message?.message}</div>
+                                <div className="bg-[#ccc] p-2 rounded-[10px]">
+                                    <Markdown>
+                                        {message?.message}
+                                    </Markdown>
+                                </div>
                             </div>
                         </div>
                         <br />
@@ -124,9 +127,15 @@ const ChatPage = () => {
 
                 {testText ? (<div className="message-box message-box-assistant">
                     <div className="w-[calc(100%-100px)]">
-                        <div className="bg-[#ccc] p-2 rounded-[10px]">{testText}</div>
+                        <div className="bg-[#ccc] p-2 rounded-[10px]">
+                            <Markdown>
+                                {testText}
+                            </Markdown>
+                        </div>
                     </div>
                 </div>) : <></>}
+
+                <div ref={messagesEndRef} />
             </div>
             <div className="flex items-center gap-2">
                 <input
