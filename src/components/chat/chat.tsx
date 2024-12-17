@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import Markdown from 'react-markdown';
 import { Spin } from "antd";
 
 const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-let msgCurent = ""
+// let msgCurent = ""
 const ChatPage = () => {
     const [socket, setSocket] = useState<any>(null);
     const [testText, setTestText] = useState<any>("");
-    const [messages, setMessages] = useState<string[]>([]);
+    // const [messages, setMessages] = useState<string[]>([]);
+    const messageCurrentRef = useRef("")
     const [contentMessages, setContentMessages] = useState<any[]>([]);
     const [isLoadAnswer, setIsLoadAnswer] = useState<boolean>(false); // dùng để disable btn chat khi câu trả lời đang được ren
     const [inputMessage, setInputMessage] = useState<string>("");
@@ -35,23 +36,26 @@ const ChatPage = () => {
             }
             const data = JSON.parse(jsonString);
             if (data?.type === 'START') {
-                msgCurent = ""
+                messageCurrentRef.current = ""
             }
+            // console.log(data?.value);
 
-            msgCurent = `${msgCurent}${data?.value}`
+            setTestText((prevText: string) => prevText + data?.value);
+
+            messageCurrentRef.current = `${messageCurrentRef.current}${data?.value}`
 
             if (data?.type === 'EOS') {
-                // newMessages.push(msgCurent);
+                console.log("testText: ", testText);
+
                 setContentMessages((prevMessages) => {
                     let newListMsg = [...prevMessages]
                     newListMsg.push({
                         role: 'bot',
-                        message: msgCurent
+                        message: messageCurrentRef.current
                     });
                     return newListMsg
                 });
-
-                setIsLoadAnswer(false)
+                setTestText("")
             }
         });
 
@@ -67,7 +71,6 @@ const ChatPage = () => {
             thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
             message: inputMessage,
         };
-        setIsLoadAnswer(true)
         socket.emit("message", messageData);
 
         setContentMessages((prevMessages) => {
@@ -118,6 +121,12 @@ const ChatPage = () => {
                         <br />
                     </div>
                 ))}
+
+                {testText ? (<div className="message-box message-box-assistant">
+                    <div className="w-[calc(100%-100px)]">
+                        <div className="bg-[#ccc] p-2 rounded-[10px]">{testText}</div>
+                    </div>
+                </div>) : <></>}
             </div>
             <div className="flex items-center gap-2">
                 <input
