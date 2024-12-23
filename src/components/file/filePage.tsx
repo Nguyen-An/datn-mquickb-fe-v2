@@ -1,13 +1,15 @@
 "use client";
-import { Input, Pagination, Tooltip } from 'antd';
+import { Input, notification, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
 import icon from '@/../public/icons/index';
-import { getDataFiles } from '@/api/file';
+import { deleleFile, getDataFiles } from '@/api/file';
 import { convertTimeToFormat, convertTimeToFormat2 } from '@/constant/until';
 import FileFormModal from './fileFormModal';
 import { DataFrom } from '@/lib/interface';
+import confirm from 'antd/es/modal/confirm';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 interface FileChat {
     id: any;
@@ -71,6 +73,36 @@ const FilePage = () => {
         getData(1)
     }, [])
 
+    const showDeleteConfirm = (item: any) => {
+        confirm({
+            title: 'Bạn có chắc chắn muốn xóa file này',
+            icon: <ExclamationCircleFilled />,
+            content: '',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            centered: true,
+            onOk: async () => {
+                try {
+                    await deleleFile(item.key)
+                    notification.open({
+                        message: 'Xóa file thành công!',
+                        type: 'success'
+                    });
+                    getData(currentPage)
+                } catch (error) {
+                    notification.open({
+                        message: 'Đã có lỗi xảy ra',
+                        type: 'error'
+                    });
+                }
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
+
     return (
         <>
             <div className='px-8 py-6'>
@@ -103,12 +135,9 @@ const FilePage = () => {
                                                 <td><div className="text-center text-[#1c56c0]"><a href={item.file_path}>{item.file_path}</a></div></td>
                                                 <td><div className="text-center">{convertTimeToFormat2(item.uploaded_at)}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "100px" }}>
-                                                    <div className="flex justify-between">
-                                                        <Tooltip title={"detail"}>
-                                                            <button><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
-                                                        </Tooltip>
+                                                    <div className="flex justify-center">
                                                         <Tooltip title={"delete"}>
-                                                            <button><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
+                                                            <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>
                                                 </td>

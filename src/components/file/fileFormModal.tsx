@@ -8,6 +8,7 @@ import { postDataTable, putDataTable } from '@/api/table';
 import { COMMON } from '@/constant/common';
 import { getLinkQRCode } from '@/constant';
 import UploadFileChatBot from '../upload/uploadFileChatBot';
+import { uploadFileForm } from '@/api/file';
 
 const FileFormModal: React.FC<{
     isModalOpen: boolean;
@@ -26,43 +27,32 @@ const FileFormModal: React.FC<{
 
     const handleOk = async () => {
         const valuesForm = await form.validateFields();
-        // let payload = {
-        //     "file_name": qrCode,
-        //     "file_path_s3": status ? status : "",
-        //     "describe": valuesForm?.describe ?? "",
-        //     "file_path": valuesForm?.describe ?? "",
-        //     "key": valuesForm?.describe ?? "",
-        // }
-        console.log("valuesForm?.describe: ", valuesForm?.describe);
-        console.log("file: ", file);
-        
+        if (!file[0]) {
+            notification["error"]({
+                message: "Vui lòng chọn file!",
+            });
+            return;
+        }
 
-        // if (dataFrom.mode === 'create') {
-        //     try {
-        //         const data = await postDataTable(payload)
-        //         notification["success"]({
-        //             message: `Thêm mới thành công!`,
-        //         });
-        //         handleCancel(true)
-        //     } catch (error) {
-        //         notification["error"]({
-        //             message: `Thêm mới thất bại!`,
-        //         });
-        //     }
-        // } else if (dataFrom.mode === 'edit') {
-        //     try {
-        //         const data = await putDataTable(payload, dataFrom?.data?.id)
-        //         notification["success"]({
-        //             message: `Thêm mới thành công!`,
-        //         });
-        //         handleCancel(true)
-        //     } catch (error) {
-        //         notification["error"]({
-        //             message: `Thêm mới thất bại!`,
-        //         });
-        //     }
+        let payload = {
+            "file_name": file[0]?.filename,
+            "file_path_s3": file[0]?.file_url,
+            "describe": valuesForm?.describe,
+            "file_path": file[0]?.file_url_s3,
+            "key": file[0]?.filename,
+        }
 
-        // }
+        try {
+            const data = await uploadFileForm(payload)
+            notification["success"]({
+                message: `Thêm mới thành công!`,
+            });
+            handleCancel(true)
+        } catch (error) {
+            notification["error"]({
+                message: `Thêm mới thất bại!`,
+            });
+        }
     }
 
     return (
