@@ -9,6 +9,7 @@ const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8
 // let msgCurent = ""
 const ChatPage = () => {
     const [socket, setSocket] = useState<any>(null);
+    const [threadId, setThreadId] = useState<any>(null);
     const [testText, setTestText] = useState<any>("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
     // const [messages, setMessages] = useState<string[]>([]);
@@ -63,6 +64,10 @@ const ChatPage = () => {
             }
         });
 
+        socket.on('thread', (response) => {
+            setThreadId(response)
+        });
+
         return () => {
             socket.disconnect(); // Cleanup khi unmount
         };
@@ -76,7 +81,8 @@ const ChatPage = () => {
         if (!inputMessage.trim()) return;
 
         const messageData = {
-            thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
+            // thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
+            thread_id: threadId,
             message: inputMessage,
         };
         socket.emit("message", messageData);
