@@ -72,6 +72,7 @@ const TablePage = () => {
             const data = await getDataTable(params)
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
+            setTotalPage(data?.data?.total_pages)
         } catch (error) {
         }
     }
@@ -139,10 +140,13 @@ const TablePage = () => {
         setIsShowForm(false)
     }
 
-
     useEffect(() => {
         getData(1)
     }, [])
+
+    useEffect(() => {
+        getData(currentPage)
+    }, [currentPage])
 
     return (
         <>
@@ -150,7 +154,7 @@ const TablePage = () => {
                 <div className='text-[28px] text-blue-primary font-semibold'>Quản lý bàn ăn</div>
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
-                        <div><Input placeholder="Basic usage" /></div>
+                        <div></div>
                         <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>Thêm mới</button></div>
                     </div>
                     <div className='app-table-outline'>
@@ -171,18 +175,18 @@ const TablePage = () => {
                                     {
                                         dataTable.map((item: any, index: any) => (
                                             <tr key={index}>
-                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 10}</div></td>
                                                 <td><div className="text-center">{item?.table_name}</div></td>
                                                 <td><div className="text-center">{getLinkQRCode(item?.qr_code)}</div></td>
                                                 <td><div className="text-center"><QRCode size={120} value={getLinkQRCode(item?.qr_code) || '-'} /></div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.TABLE_STATUS, item?.status)}</div></td>
                                                 <td>
                                                     {
-                                                        (item?.order_id && item?.status == 'in_use') ? 
-                                                        <div className="text-center">
-                                                            <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#c48034] px-6 py-2' onClick={() => showModalStaffCall(item)}>Xem yêu cầu</button>
-                                                        </div> 
-                                                        : <></>
+                                                        (item?.order_id && item?.status == 'in_use') ?
+                                                            <div className="text-center">
+                                                                <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#c48034] px-6 py-2' onClick={() => showModalStaffCall(item)}>Xem yêu cầu</button>
+                                                            </div>
+                                                            : <></>
                                                     }
                                                 </td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
@@ -207,7 +211,7 @@ const TablePage = () => {
                         </table>
                     </div>
                     <div className="mt-5 flex justify-center">
-                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={1} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowDetail ? (<TableDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></TableDetailModal>) : null}
                     {isShowStaffCall ? (<StaffCallModal isModalOpen={isShowStaffCall} dataFrom={dataInfotable} handleCancel={handleCancelModalStaffCall} handleOk={handleOkModalStaffCall}></StaffCallModal>) : null}
