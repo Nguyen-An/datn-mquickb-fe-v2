@@ -1,5 +1,5 @@
 "use client";
-import { Input, notification, Pagination, Tooltip } from 'antd';
+import { Button, Input, notification, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
@@ -30,6 +30,8 @@ const FilePage = () => {
     const [totalPage, setTotalPage] = useState(0)
     const [dataTable, setDataTable] = useState<FileChat[]>([])
     const [isShowForm, setIsShowForm] = useState(false)
+    const [keyWordInput, setKeyWordInput] = useState("")
+    const [keyWord, setKeyWord] = useState("")
     const [dataFrom, setDataFrom] = useState<DataFrom>({
         mode: "detail",
         data: {}
@@ -43,12 +45,14 @@ const FilePage = () => {
     const getData = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 10
+            "page_size": 10,
+            "key_word": keyWord
         }
         try {
             const data = await getDataFiles(params)
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
+            setTotalPage(data?.data?.total_pages)
         } catch (error) {
         }
     }
@@ -103,13 +107,32 @@ const FilePage = () => {
         });
     };
 
+
+    useEffect(() => {
+        getData(currentPage)
+    }, [keyWord, currentPage])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWordInput(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setKeyWord(keyWordInput)
+        setCurrentPage(1)
+    };
+
     return (
         <>
             <div className='px-8 py-6'>
                 <div className='text-[28px] text-blue-primary font-semibold'>Quản lý tài liệu</div>
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
-                        <div><Input placeholder="Basic usage" /></div>
+                        <div className='flex'>
+                            <Input placeholder="Tìm kiếm theo tên file hoặc miêu tả" onChange={handleInputChange} className='mr-5 w-[250px]' />
+                            <Button type="primary" onClick={handleSearch} className='h-10'>
+                                Tìm kiếm
+                            </Button>
+                        </div>
                         <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>Thêm mới</button></div>
                     </div>
                     <div className='app-table-outline'>
@@ -129,7 +152,7 @@ const FilePage = () => {
                                     {
                                         dataTable.map((item: any, index: any) => (
                                             <tr key={index}>
-                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 10}</div></td>
                                                 <td><div className="text-center">{item.file_name}</div></td>
                                                 <td><div className="text-center">{item.describe}</div></td>
                                                 <td><div className="text-center text-[#1c56c0]"><a href={item.file_path}>{item.file_path}</a></div></td>
@@ -150,7 +173,7 @@ const FilePage = () => {
 
                     </div>
                     <div className="mt-5 flex justify-center">
-                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={1} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowForm ? (<FileFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></FileFormModal>) : null}
                 </div>

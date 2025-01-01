@@ -1,5 +1,5 @@
 "use client";
-import { Input, Modal, notification, Pagination, Tooltip } from 'antd';
+import { Button, Input, Modal, notification, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
@@ -37,6 +37,8 @@ const MenuPage = () => {
         mode: "detail",
         data: {}
     })
+    const [keyWordInput, setKeyWordInput] = useState("")
+    const [keyWord, setKeyWord] = useState("")
 
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
@@ -78,7 +80,7 @@ const MenuPage = () => {
         setIsShowDetail(false)
     }
     const handleCancelForm = (reload?: boolean) => {
-        if(reload) getDataMenu(currentPage)
+        if (reload) getDataMenu(currentPage)
         setIsShowForm(false)
     }
 
@@ -96,13 +98,13 @@ const MenuPage = () => {
                     await deleteTable(item.id)
                     notification.open({
                         message: 'Xóa bàn ăn thành công!',
-                        type:'success'
+                        type: 'success'
                     });
                     getDataMenu(currentPage)
                 } catch (error) {
                     notification.open({
                         message: 'Đã có lỗi xảy ra',
-                        type:'error'
+                        type: 'error'
                     });
                 }
             },
@@ -115,19 +117,35 @@ const MenuPage = () => {
     const getDataMenu = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 10
+            "page_size": 10,
+            "key_word": keyWord
         }
         try {
             const data = await getDataM(params)
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
+            setTotalPage(data?.data?.total_pages)
         } catch (error) {
         }
     }
 
-    useEffect(() => { 
+    useEffect(() => {
         getDataMenu(1)
     }, [])
+
+
+    useEffect(() => {
+        getDataMenu(currentPage)
+    }, [keyWord, currentPage])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWordInput(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setKeyWord(keyWordInput)
+        setCurrentPage(1)
+    };
 
     return (
         <>
@@ -135,7 +153,12 @@ const MenuPage = () => {
                 <div className='text-[28px] text-blue-primary font-semibold'>Quản lý món ăn</div>
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
-                        <div><Input placeholder="Basic usage" /></div>
+                        <div className='flex'>
+                            <Input placeholder="Tìm kiếm theo tên hoặc miêu tả" onChange={handleInputChange} className='mr-5 w-[250px]' />
+                            <Button type="primary" onClick={handleSearch} className='h-10'>
+                                Tìm kiếm
+                            </Button>
+                        </div>
                         <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>Thêm mới</button></div>
                     </div>
                     <div className='app-table-outline'>
@@ -157,7 +180,7 @@ const MenuPage = () => {
                                     {
                                         dataTable.map((item: any, index: any) => (
                                             <tr key={index}>
-                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 10}</div></td>
                                                 <td><div className="text-center">{item?.name}</div></td>
                                                 <td><div className="text-center">{item?.description}</div></td>
                                                 <td><div className="text-center"><Image src={item?.image_link} alt="" width={120} height={120} /></div></td>
@@ -186,7 +209,7 @@ const MenuPage = () => {
                         </table>
                     </div>
                     <div className="mt-5 flex justify-center">
-                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={1} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowDetail ? (<MenuDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></MenuDetailModal>) : null}
                     {isShowForm ? (<MenuFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></MenuFormModal>) : null}

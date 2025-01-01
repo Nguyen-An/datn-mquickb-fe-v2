@@ -1,5 +1,5 @@
 "use client";
-import { Input, notification, Pagination, Tooltip } from 'antd';
+import { Button, Input, notification, Pagination, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
@@ -31,6 +31,8 @@ const UserPage = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
     const [dataTable, setDataTable] = useState<User[]>([])
+    const [keyWordInput, setKeyWordInput] = useState("")
+    const [keyWord, setKeyWord] = useState("")
 
     const [isShowDetail, setIsShowDetail] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
@@ -65,12 +67,14 @@ const UserPage = () => {
     const getDataUser = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 10
+            "page_size": 10,
+            "key_word": keyWord
         }
         try {
             const data = await getDataU(params)
             setDataTable(data?.data?.data)
             setCurrentPage(data?.data?.current_page)
+            setTotalPage(data?.data?.total_pages)
         } catch (error) {
         }
     }
@@ -119,20 +123,38 @@ const UserPage = () => {
     }
 
     const onPageChange = async (page: number) => {
-        // await getList(page, keyword, categorySelect);
         setCurrentPage(page);
     }
 
     useEffect(() => {
         getDataUser(1)
     }, [])
+
+    useEffect(() => {
+        getDataUser(currentPage)
+    }, [keyWord, currentPage])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyWordInput(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setKeyWord(keyWordInput)
+        setCurrentPage(1)
+    };
+
     return (
         <>
             <div className='px-8 py-6'>
                 <div className='text-[28px] text-blue-primary font-semibold'>Quản lý người dùng</div>
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
-                        <div><Input placeholder="Basic usage" /></div>
+                        <div className='flex'>
+                            <Input placeholder="Tìm kiếm theo tên hoặc email" onChange={handleInputChange} className='mr-5 w-[250px]' />
+                            <Button type="primary" onClick={handleSearch} className='h-10'>
+                                Tìm kiếm
+                            </Button>
+                        </div>
                         <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>Thêm mới</button></div>
                     </div>
                     <div className='app-table-outline'>
@@ -152,7 +174,7 @@ const UserPage = () => {
                                     {
                                         dataTable.map((item: any, index: any) => (
                                             <tr key={index}>
-                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 10}</div></td>
                                                 <td><div className="text-center">{item?.name}</div></td>
                                                 <td><div className="text-center">{item?.email}</div></td>
                                                 <td><div className="text-center">{getLabelByValue(COMMON.USER_ROLES, item?.role)}</div></td>
@@ -178,7 +200,7 @@ const UserPage = () => {
                         </table>
                     </div>
                     <div className="mt-5 flex justify-center">
-                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={1} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowDetail ? (<UserDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></UserDetailModal>) : null}
                     {isShowForm ? (<UserFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></UserFormModal>) : null}
