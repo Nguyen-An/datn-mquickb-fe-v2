@@ -24,11 +24,7 @@ const items: MenuItem[] = [
     {
         label: 'Chat',
         key: 'chat',
-    },
-    {
-        label: "Đăng xuất",
-        key: 'logout',
-    },
+    }
 ];
 
 const CustomerLayoutHeader = ({ }: {}) => {
@@ -36,13 +32,8 @@ const CustomerLayoutHeader = ({ }: {}) => {
     const router = useRouter();
 
     const onClick: MenuProps['onClick'] = (e) => {
-        if (e.key == 'logout') {
-            router.push("/customer");
-            handleLogout();
-        } else {
-            router.push(`/customer/${e.key}`);
-            setCurrent(e.key);
-        }
+        router.push(`/customer/${e.key}`);
+        setCurrent(e.key);
     };
     return (
         <>

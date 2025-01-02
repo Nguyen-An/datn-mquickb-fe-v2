@@ -1,5 +1,5 @@
 "use client";
-import { Input, Pagination, Select, Tooltip } from 'antd';
+import { Button, Input, Pagination, Select, Tooltip } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import "@/style/page.scss"
@@ -32,9 +32,6 @@ const OrderPage = () => {
     const srcIconDelete = icon['iconDelete']
     const srcIconEdit = icon['iconEdit']
     const srcIconView = icon['iconView']
-    const handleChange = (value: string) => {
-        console.log(`selected ${value}`);
-    };
 
     const [isShowDetail, setIsShowDetail] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
@@ -43,14 +40,20 @@ const OrderPage = () => {
         data: {}
     })
 
+    const [status, setStatus] = useState("")
+
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
     const [dataTable, setDataTable] = useState<OrderItems[]>([])
 
     const onPageChange = async (page: number) => {
-        // await getList(page, keyword, categorySelect);
         setCurrentPage(page);
     }
+
+    const handleChange = (value: string) => {
+        setStatus(value)
+        setCurrentPage(1);
+    };
 
     const handleShowModal = (mode: string, item: any) => {
         switch (mode) {
@@ -83,27 +86,32 @@ const OrderPage = () => {
         setIsShowDetail(false)
     }
     const handleCancelForm = (reload?: boolean) => {
-        if(reload) getDataOrderItem(currentPage)
+        if (reload) getDataOrderItem(currentPage)
         setIsShowForm(false)
     }
 
     const getDataOrderItem = async (page: number) => {
         let params = {
             "page": page,
-            "page_size": 10
+            "page_size": 10,
+            "status": status
         }
         try {
             const data = await getDataOrderItems(params)
             setDataTable(convertDataOrder(data?.data?.data))
             setCurrentPage(data?.data?.current_page)
+            setTotalPage(data?.data?.total_pages)
         } catch (error) {
         }
     }
 
-    useEffect(() => { 
+    useEffect(() => {
         getDataOrderItem(1)
     }, [])
 
+    useEffect(() => {
+        getDataOrderItem(currentPage)
+    }, [status, currentPage])
 
     return (
         <>
@@ -112,7 +120,8 @@ const OrderPage = () => {
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
                         <div className='flex'>
-                            <div className='mr-3'><Input style={{ width: 240, height: 32 }} placeholder="Basic usage" /></div>
+                            <div className='flex'>
+                            </div>
                             <div>
                                 <Select
                                     defaultValue="all"
@@ -125,11 +134,11 @@ const OrderPage = () => {
                                         { value: 'cooking', label: 'Đang nấu' },
                                         { value: 'served', label: 'Đã phục vụ' },
                                         { value: 'rejected', label: 'Đã từ chối' },
+                                        { value: 'paid', label: 'Đã thanh toán' },
                                     ]}
                                 /></div>
                         </div>
                         <div>
-                            <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2'>Thêm mới</button>
                         </div>
                     </div>
                     <div className='app-table-outline'>
@@ -139,7 +148,6 @@ const OrderPage = () => {
                                     <th><span>No.</span></th>
                                     <th className="scroll-header" style={{ minWidth: "180px" }}>Tên bàn</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Tên món ăn</th>
-                                    {/* <th className="scroll-header" style={{ minWidth: "180px" }}>Tên khách hàng</th> */}
                                     <th className="scroll-header" style={{ width: "150px" }}>Số lượng</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Trạng thái</th>
                                     <th className="scroll-header" style={{ minWidth: "150px" }}>Lần cập nhật gần nhất</th>
@@ -147,15 +155,15 @@ const OrderPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                            {(dataTable && dataTable?.length > 0) ? (<>
+                                {(dataTable && dataTable?.length > 0) ? (<>
                                     {
                                         dataTable.map((item, index: any) => (
                                             <tr key={index}>
-                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 20}</div></td>
+                                                <td><div className="text-center">{(index + 1) + (currentPage - 1) * 10}</div></td>
                                                 <td><div className="text-center">{item?.name_table ?? "--"}</div></td>
                                                 <td><div className="text-center">{item?.menu_item_name}</div></td>
                                                 <td><div className="text-center">{item?.quantity}</div></td>
-                                                <td><div className="text-center">{getLabelByValue(COMMON.ORDER_STATUS,item?.status)}</div></td>
+                                                <td><div className="text-center">{getLabelByValue(COMMON.ORDER_STATUS, item?.status)}</div></td>
                                                 <td><div className="text-center">{convertTimeToFormat(item?.updated_at)}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "110px" }}>
                                                     <div className="flex justify-between">
@@ -176,7 +184,7 @@ const OrderPage = () => {
 
                     </div>
                     <div className="mt-5 flex justify-center">
-                        <Pagination showSizeChanger={false} current={currentPage} pageSize={10} total={totalPage} onChange={onPageChange} />
+                        <Pagination showSizeChanger={false} current={currentPage} pageSize={1} total={totalPage} onChange={onPageChange} />
                     </div>
                     {isShowDetail ? (<OrderItemDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></OrderItemDetailModal>) : null}
                     {isShowForm ? (<OrderItemFormModal isModalOpen={isShowForm} dataFrom={dataFrom} handleCancel={handleCancelForm}></OrderItemFormModal>) : null}

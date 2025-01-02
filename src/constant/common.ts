@@ -50,7 +50,6 @@ export const COMMON = {
         },
     ],
     ORDER_STATUS: [
-        { value: 'all', label: 'Tất cả' },
         { value: 'pending', label: 'Chờ xử lý ' },
         { value: 'order_received', label: 'Đã nhận đơn' },
         { value: 'cooking', label: 'Đang nấu' },

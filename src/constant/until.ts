@@ -9,31 +9,37 @@ export function convertMoney(amount: any): string {
 }
 
 // mm/hh - DD/MM/YYYY
-export function convertTimeToFormat(input: any): string {
-    // Ép kiểu input thành kiểu Date và kiểm tra tính hợp lệ
+export function convertTimeToFormat(input: string | number | Date): string {
+    // Chuyển đổi input sang kiểu Date
     const date = new Date(input);
 
-    // Kiểm tra nếu date là một ngày hợp lệ
+    // Kiểm tra nếu input là một ngày hợp lệ
     if (isNaN(date.getTime())) {
         throw new Error('Invalid date input');
     }
 
-    // Chuyển đổi sang định dạng mong muốn
-    return moment(date).format('hh:mm - DD/MM/YYYY');
+    // Điều chỉnh múi giờ (cộng thêm 7 tiếng)
+    const adjustedDate = moment(date).add(7, 'hours');
+
+    // Trả về ngày theo định dạng mong muốn
+    return adjustedDate.format('HH:mm - DD/MM/YYYY');
 }
 
 // DD/MM/YYYY
 export function convertTimeToFormat2(input: any): string {
-    // Ép kiểu input thành kiểu Date và kiểm tra tính hợp lệ
+    // Chuyển đổi input sang kiểu Date
     const date = new Date(input);
 
-    // Kiểm tra nếu date là một ngày hợp lệ
+    // Kiểm tra nếu input là một ngày hợp lệ
     if (isNaN(date.getTime())) {
         throw new Error('Invalid date input');
     }
 
-    // Chuyển đổi sang định dạng mong muốn
-    return moment(date).format('DD/MM/YYYY');
+    // Điều chỉnh múi giờ (cộng thêm 7 tiếng)
+    const adjustedDate = moment(date).add(7, 'hours');
+
+    // Trả về ngày theo định dạng mong muốn
+    return adjustedDate.format('DD/MM/YYYY');
 }
 
 export function formatTimeDifference(time: any): string {
