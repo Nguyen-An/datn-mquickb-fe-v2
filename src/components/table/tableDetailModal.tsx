@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { getLinkQRCode } from '@/constant';
 import { COMMON, getLabelByValue } from '@/constant/common';
-import { payTable } from '@/api/order';
+import { getBillByOrder, payTable } from '@/api/order';
+import { convertMoney } from '@/constant/until';
 
 const TableDetailModal: React.FC<{
   isModalOpen: boolean;
@@ -15,10 +16,23 @@ const TableDetailModal: React.FC<{
 }> = ({ isModalOpen, dataFrom, handleCancel, handleOk }) => {
 
   const [itemData, setItemData] = useState<any>(null)
+  const [billData, setBillData] = useState<number>(0)
 
   useEffect(() => {
     setItemData(dataFrom.data)
+
+    if(dataFrom.data?.order_id) {
+      getData(dataFrom.data?.order_id)
+    }
   }, [dataFrom])
+
+    const getData = async (id: any) => {
+        try {
+            const data = await getBillByOrder(id)
+            setBillData(Number(data?.data))
+        } catch (error) {
+        }
+    }
 
   const handlePay = async () => {
     try {
@@ -49,7 +63,7 @@ const TableDetailModal: React.FC<{
           <div className='flex flex-col items-center text-center'>
             <p><strong>Ảnh:</strong> {itemData?.qr_code ? (<QRCode size={120} value={getLinkQRCode(itemData?.qr_code)} />) : null}</p>
             {
-              (itemData?.status == 'in_use' || itemData?.order_id) ? <Button type="dashed" className='mt-2' onClick={() => handlePay()}>Thanh toán</Button> : <></>
+              (itemData?.status == 'in_use' || itemData?.order_id) ? <Button type="dashed" className='mt-2' onClick={() => handlePay()}>Thanh toán: {convertMoney(billData)} VNĐ</Button> : <></>
             }
           </div>
         </div>

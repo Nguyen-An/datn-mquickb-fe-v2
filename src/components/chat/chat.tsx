@@ -51,7 +51,7 @@ const ChatPage = () => {
 
             if (data?.type === 'EOS') {
                 console.log("testText: ", testText);
-
+                setIsLoadAnswer(false);
                 setContentMessages((prevMessages) => {
                     let newListMsg = [...prevMessages]
                     newListMsg.push({
@@ -79,7 +79,7 @@ const ChatPage = () => {
 
     const sendChat = () => {
         if (!inputMessage.trim()) return;
-
+        setIsLoadAnswer(true);
         const messageData = {
             // thread_id: "thread_VdGchV3tOX8Z6O60OJSYL57K",
             thread_id: threadId,
@@ -101,7 +101,7 @@ const ChatPage = () => {
 
     return (
         <div className="flex flex-col h-[calc(100vh-75px)] p-4 bg-gray-100">
-            <Spin spinning={isLoadAnswer} size='large' fullscreen />
+            {/* <Spin spinning={isLoadAnswer} size='large' fullscreen /> */}
             <div className="flex-1 overflow-y-auto bg-white shadow-md rounded-md p-4 mb-4">
                 {contentMessages.map((message, index) => (
                     <div
@@ -150,10 +150,12 @@ const ChatPage = () => {
                     onChange={(e) => setInputMessage(e.target.value)}
                     placeholder="Nhập tin nhắn..."
                     className="flex-1 p-2 border border-gray-300 rounded-md"
+                    disabled={isLoadAnswer}
                 />
                 <button
                     onClick={sendChat}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    disabled={isLoadAnswer}
                 >
                     Gửi
                 </button>
