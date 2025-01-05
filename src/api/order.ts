@@ -50,3 +50,8 @@ export async function postStaffCall(payload?: any) {
     const data = await sendPost(`order/staff-call`, payload)
     return data
 }
+
+export async function getBillByOrder(id?: any) {
+    const data = await sendGet(`order/bill-order/${id}`)
+    return data
+}

@@ -14,4 +14,9 @@
     :where(.css-dev-only-do-not-override-49qm).ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-selected::after {
         display: none;
     }
+
+    .ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
 }
