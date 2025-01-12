@@ -86,7 +86,7 @@ const MenuPage = () => {
 
     const showDeleteConfirm = (item: any) => {
         confirm({
-            title: 'Bạn có chắc chắn muốn xóa bàn ăn này',
+            title: 'Bạn có chắc chắn muốn xóa món ăn này',
             icon: <ExclamationCircleFilled />,
             content: '',
             okText: 'Yes',
@@ -95,9 +95,9 @@ const MenuPage = () => {
             centered: true,
             onOk: async () => {
                 try {
-                    await deleteTable(item.id)
+                    await deleteMenuItem(item.id)
                     notification.open({
-                        message: 'Xóa bàn ăn thành công!',
+                        message: 'Xóa món ăn thành công!',
                         type: 'success'
                     });
                     getDataMenu(currentPage)
