@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import Markdown from 'react-markdown';
 import { Spin } from "antd";
+import "./chat.scss"
 
 const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 // let msgCurent = ""
@@ -119,7 +120,7 @@ const ChatPage = () => {
                             </div>
                         }
                         <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''}`}>
-                            <div className={`${message?.role == 'user' ? 'flex flex-row-reverse' : ''} w-[calc(100%-100px)]`}>
+                            <div className={`${message?.role == 'user' ? 'flex flex-row-reverse w-[calc(100%-70px)]' : 'inline-block max-width-custom'}`}>
                                 <div className="bg-[#ccc] p-2 rounded-[10px]">
                                     <Markdown>
                                         {message?.message}
@@ -132,7 +133,7 @@ const ChatPage = () => {
                 ))}
 
                 {testText ? (<div className="message-box message-box-assistant">
-                    <div className="w-[calc(100%-100px)]">
+                    <div className="inline-block max-width-custom">
                         <div className="bg-[#ccc] p-2 rounded-[10px]">
                             <Markdown>
                                 {testText}

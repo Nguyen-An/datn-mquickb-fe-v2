@@ -68,12 +68,12 @@ const SideBar = () => {
         key: "order",
         permissions: ["staff"]
       },
-      {
-        icon: <WechatWorkOutlined style={{ fontSize: "22px", color: "#fff" }} />,
-        title: "chat_gpt",
-        active: false,
-        key: "chat",
-      },
+      // {
+      //   icon: <WechatWorkOutlined style={{ fontSize: "22px", color: "#fff" }} />,
+      //   title: "chat_gpt",
+      //   active: false,
+      //   key: "chat",
+      // },
     ]
   );
 

@@ -49,24 +49,24 @@ const MenuFormModal: React.FC<{
             try {
                 const data = await postDataMenu(payload)
                 notification["success"]({
-                    message: `Thêm mới thành công!`,
+                    message: `Thêm mới món ăn thành công!`,
                 });
                 handleCancel(true)
             } catch (error) {
                 notification["error"]({
-                    message: `Thêm mới thất bại!`,
+                    message: `Thêm mới món ăn thất bại!`,
                 });
             }
         } else if(dataFrom.mode === 'edit') {
             try {
                 const data = await putDataMenu(payload, dataFrom?.data?.id)
                 notification["success"]({
-                    message: `Thêm mới thành công!`,
+                    message: `Cập nhât món ăn thành công!`,
                 });
                 handleCancel(true)
             } catch (error) {
                 notification["error"]({
-                    message: `Thêm mới thất bại!`,
+                    message: `Cập nhât món ăn thất bại!`,
                 });
             }
             

@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { postDataTable, putDataTable } from '@/api/table';
 import { COMMON } from '@/constant/common';
 import { getLinkQRCode } from '@/constant';
+import { jwtDecode } from 'jwt-decode';
 
 const TableFormModal: React.FC<{
     isModalOpen: boolean;
@@ -15,9 +16,9 @@ const TableFormModal: React.FC<{
 }> = ({ isModalOpen, dataFrom, handleCancel }) => {
 
     const [title, setTitle] = useState("")
-    const [status, setStatus] = useState(null)
     const [form] = Form.useForm();
     const [qrCode, setQrCode] = useState<any>("");
+    const [userInfo, setUserInfo] = useState<any>();
 
     useEffect(() => {
         if (dataFrom.mode === 'create') {
@@ -27,8 +28,8 @@ const TableFormModal: React.FC<{
             form.setFieldsValue({
                 "table_name": dataFrom.data?.table_name ?? "",
                 "qr_code": dataFrom.data?.qr_code ?? "",
+                "status": dataFrom.data?.status ?? "",
             })
-            setStatus(dataFrom.data?.status)
             setQrCode(dataFrom.data?.qr_code)
         }
     }, [dataFrom])
@@ -39,7 +40,7 @@ const TableFormModal: React.FC<{
         let payload = {
             "table_name": valuesForm?.table_name ?? "",
             "qr_code": qrCode,
-            "status": status ? status : ""
+            "status": valuesForm?.status ?? ""
         }
 
         if (dataFrom.mode === 'create') {
@@ -70,15 +71,17 @@ const TableFormModal: React.FC<{
         }
     }
 
-    const handleChange = (value: any) => {
-        setStatus(value)
-    }
-
     const changeQRCode = () => {
         const newToken = `${uuidv4()}`;
         form.setFieldValue("qr_code", newToken)
         setQrCode(newToken)
     }
+
+    useEffect(() => {
+        const token = localStorage?.getItem("token");
+        const user = (token ? jwtDecode(token) : null) as any;
+        setUserInfo(user);
+    }, []);
 
     return (
         <>
@@ -90,15 +93,17 @@ const TableFormModal: React.FC<{
                         style={{ width: "100%" }}
                     >
                         <Form.Item name="table_name" label="Tên bàn ăn" rules={[{ required: true, message: 'Tên bàn ăn không được phép trống' }]}>
-                            <Input placeholder="Nhập tên bàn ăn" />
+                            <Input disabled={userInfo?.role_id != "manager"} placeholder="Nhập tên bàn ăn" />
                         </Form.Item>
-                        <Form.Item name="status" label="Trạng thái bàn" rules={[{ required: true, message: 'Trạng thái bàn không được phép trống' }]}>
+                        <Form.Item
+                            name="status"
+                            label="Trạng thái bàn"
+                            rules={[{ required: true, message: 'Trạng thái bàn không được phép trống' }]}
+                        >
                             <Select
                                 placeholder="Chọn trạng thái"
-                                style={{ width: "100%" }}
+                                style={{ width: '100%' }}
                                 options={COMMON.TABLE_STATUS}
-                                value={status}
-                                onChange={handleChange}
                             />
                         </Form.Item>
 

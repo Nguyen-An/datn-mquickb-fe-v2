@@ -167,10 +167,10 @@ const OrderPage = () => {
                                                 <td><div className="text-center">{convertTimeToFormat(item?.updated_at)}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "110px" }}>
                                                     <div className="flex justify-between">
-                                                        <Tooltip title={"detail"}>
+                                                        <Tooltip title={"Xem chi tiết"}>
                                                             <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"edit"}>
+                                                        <Tooltip title={"Chỉnh sửa"}>
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>

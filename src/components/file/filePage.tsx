@@ -86,6 +86,7 @@ const FilePage = () => {
             okType: 'danger',
             cancelText: 'No',
             centered: true,
+            maskClosable: true,
             onOk: async () => {
                 try {
                     await deleleFile(item.key)
@@ -140,9 +141,9 @@ const FilePage = () => {
                             <thead>
                                 <tr>
                                     <th><span>No.</span></th>
-                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Tên file</th>
+                                    <th className="scroll-header" style={{ minWidth: "200px" }}>Tên tài liệu</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Miêu tả</th>
-                                    <th className="scroll-header" style={{ width: "200px" }}>Đường dẫm s3</th>
+                                    <th className="scroll-header" style={{ width: "200px" }}>Đường dẫn tài liệu</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Tạo lúc</th>
                                     <th style={{ width: "100px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
@@ -159,7 +160,7 @@ const FilePage = () => {
                                                 <td><div className="text-center">{convertTimeToFormat2(item.uploaded_at)}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "100px" }}>
                                                     <div className="flex justify-center">
-                                                        <Tooltip title={"delete"}>
+                                                        <Tooltip title={"Xóa"}>
                                                             <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>

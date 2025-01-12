@@ -189,13 +189,13 @@ const MenuPage = () => {
                                                 <td><div className="text-center">{item?.is_available ? "Hoạt động" : "Không hoạt động"}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">
-                                                        <Tooltip title={"detail"}>
+                                                        <Tooltip title={"Xem chi tiết"}>
                                                             <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"edit"}>
+                                                        <Tooltip title={"Chỉnh sửa"}>
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"delete"}>
+                                                        <Tooltip title={"Xóa"}>
                                                             <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>

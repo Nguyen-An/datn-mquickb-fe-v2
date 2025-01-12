@@ -82,18 +82,19 @@ const UserPage = () => {
 
     const showDeleteConfirm = (item: any) => {
         confirm({
-            title: 'Bạn có chắc chắn muốn xóa bàn ăn này',
+            title: 'Bạn có chắc chắn muốn xóa người dùng này',
             icon: <ExclamationCircleFilled />,
             content: '',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             centered: true,
+            maskClosable: true,
             onOk: async () => {
                 try {
                     await deleteUser(item.id)
                     notification.open({
-                        message: 'Xóa user thành công!',
+                        message: 'Xóa người dùng thành công!',
                         type: 'success'
                     });
                     getDataUser(currentPage)
@@ -181,13 +182,13 @@ const UserPage = () => {
                                                 <td><div className="text-center">{item?.phone_number}</div></td>
                                                 <td className="bg-no-scroll" style={{ width: "170px" }}>
                                                     <div className="flex justify-between">
-                                                        <Tooltip title={"detail"}>
+                                                        <Tooltip title={"Xem chi tiết"}>
                                                             <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                         {(item?.role != "customer_qr") && (<Tooltip title={"edit"}>
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>)}
-                                                        <Tooltip title={"delete"}>
+                                                        <Tooltip title={"Xóa"}>
                                                             <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
                                                     </div>
