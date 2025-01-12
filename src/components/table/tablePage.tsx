@@ -14,6 +14,7 @@ import moment from 'moment';
 import { COMMON, getLabelByValue } from '@/constant/common';
 import { getLinkQRCode } from '@/constant';
 import StaffCallModal from './staffCallModal';
+import { jwtDecode } from 'jwt-decode';
 interface Table {
     id: any;
     qr_code: any;
@@ -31,6 +32,8 @@ const TablePage = () => {
     const [isShowStaffCall, setIsShowStaffCall] = useState(false)
     const [isShowForm, setIsShowForm] = useState(false)
     const [dataInfotable, setDataInfotable] = useState(null)
+    const [userInfo, setUserInfo] = useState<any>();
+
     const [dataFrom, setDataFrom] = useState<DataFrom>({
         mode: "detail",
         data: {}
@@ -107,18 +110,19 @@ const TablePage = () => {
 
     const showDeleteConfirm = (item: any) => {
         confirm({
-            title: 'Bạn có chắc chắn muốn xóa món ăn này',
+            title: 'Bạn có chắc chắn muốn xóa bàn ăn này',
             icon: <ExclamationCircleFilled />,
             content: '',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             centered: true,
+            maskClosable: true,
             onOk: async () => {
                 try {
                     await deleteTable(item.id)
                     notification.open({
-                        message: 'Xóa món ăn thành công!',
+                        message: 'Xóa bàn ăn thành công!',
                         type: 'success'
                     });
                     getData(currentPage)
@@ -141,6 +145,12 @@ const TablePage = () => {
     }
 
     useEffect(() => {
+        const token = localStorage?.getItem("token");
+        const user = (token ? jwtDecode(token) : null) as any;
+        setUserInfo(user);
+    }, []);
+
+    useEffect(() => {
         getData(1)
     }, [])
 
@@ -155,7 +165,13 @@ const TablePage = () => {
                 <div className='app-screen'>
                     <div className='flex justify-between h-10 my-3'>
                         <div></div>
-                        <div><button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>Thêm mới</button></div>
+                        {userInfo?.role_id == "manager" && (
+                            <div>
+                                <button className='rounded-[8px] text-[#fff] text-[16px] bg-[#4ca2fa] px-6 py-2' onClick={() => { handleShowModal("create", null) }}>
+                                    Thêm mới
+                                </button>
+                            </div>
+                        )}
                     </div>
                     <div className='app-table-outline'>
                         <table className="app-table">
@@ -167,7 +183,7 @@ const TablePage = () => {
                                     <th className="scroll-header" style={{ width: "120px" }}>Mã QR code</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái bàn ăn</th>
                                     <th className="scroll-header" style={{ minWidth: "200px" }}>Trạng thái khách hàng</th>
-                                    <th style={{ width: "170px" }}><span className="text-left">Hành động</span></th>
+                                    <th style={{ width: userInfo?.role_id == "manager" ? "170px" : "110px" }}><span className="text-left">Hành động</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -189,17 +205,19 @@ const TablePage = () => {
                                                             : <></>
                                                     }
                                                 </td>
-                                                <td className="bg-no-scroll" style={{ width: "170px" }}>
+                                                <td className="bg-no-scroll" style={{ width: userInfo?.role_id == "manager" ? "170px" : "110px" }}>
                                                     <div className="flex justify-between">
-                                                        <Tooltip title={"detail"}>
+                                                        <Tooltip title={"Xem chi tiết"}>
                                                             <button onClick={() => { handleShowModal("view", item) }}><Image src={srcIconView} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"edit"}>
+                                                        <Tooltip title={"Chỉnh sửa"}>
                                                             <button onClick={() => { handleShowModal("edit", item) }}><Image src={srcIconEdit} alt="" className='mt-5' width={40} height={40} /></button>
                                                         </Tooltip>
-                                                        <Tooltip title={"delete"}>
-                                                            <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
-                                                        </Tooltip>
+                                                        {userInfo?.role_id == "manager" && (
+                                                            <Tooltip title={"Xóa"}>
+                                                                <button onClick={() => { showDeleteConfirm(item) }}><Image src={srcIconDelete} alt="" className='mt-5' width={40} height={40} /></button>
+                                                            </Tooltip>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

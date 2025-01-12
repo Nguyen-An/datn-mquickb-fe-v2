@@ -33,14 +33,6 @@ export const COMMON = {
     ],
     ROLE: [
         {
-            value: "customer",
-            label: "Khách hàng"
-        },
-        {
-            value: "customer_qr",
-            label: "Khác đăng nhập qr"
-        },
-        {
             value: "staff",
             label: "Nhân viên"
         },

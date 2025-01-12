@@ -72,7 +72,7 @@ const CustomerLogin = ({qrCodeParam} : any) => {
             router.push('/customer/list-menu')
         } catch (error) {
             notification.open({
-                message: 'Tài khoản hoặc mật khẩu không chính xác, vui lòng đăng nhập lại!',
+                message: 'Bàn ăn đã được sử dụng hoặc mã QR không chính xác, vui lòng đăng nhập lại hoặc liên hệ nhân viên!',
                 type: 'error'
             });
         }

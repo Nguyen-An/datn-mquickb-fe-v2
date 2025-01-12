@@ -52,7 +52,7 @@ const ModalLogin = ({
                 message: 'Đăng nhập thành công!',
                 type: 'success'
             });
-            router.push('/chat')
+            router.push('/table')
         } catch (error) {
             notification.open({
                 message: 'Tài khoản hoặc mật khẩu không chính xác, vui lòng đăng nhập lại!',

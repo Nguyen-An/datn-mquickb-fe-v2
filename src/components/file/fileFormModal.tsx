@@ -21,7 +21,7 @@ const FileFormModal: React.FC<{
     const [file, setFile] = useState<any>([]);
 
     useEffect(() => {
-        setTitle("Thêm mới file")
+        setTitle("Thêm mới tài liệu")
     }, [])
 
 
@@ -29,7 +29,7 @@ const FileFormModal: React.FC<{
         const valuesForm = await form.validateFields();
         if (!file[0]) {
             notification["error"]({
-                message: "Vui lòng chọn file!",
+                message: "Vui lòng chọn tài liệu!",
             });
             return;
         }
@@ -64,8 +64,8 @@ const FileFormModal: React.FC<{
                         form={form}
                         style={{ width: "100%" }}
                     >
-                        <Form.Item name="describe" label="Miêu tả file" rules={[{ required: true, message: 'Tên bàn ăn không được phép trống' }]}>
-                            <Input placeholder="Nhập miêu tả file" />
+                        <Form.Item name="describe" label="Miêu tả tài liệu" rules={[{ required: true, message: 'Miêu tả tài liệu không được phép trống' }]}>
+                            <Input placeholder="Nhập miêu tả tài liệu" />
                         </Form.Item>
                         <Form.Item name="image_link" label="Upload File" className='mt-4'>
                             <UploadFileChatBot file={file} setFile={setFile}></UploadFileChatBot>
