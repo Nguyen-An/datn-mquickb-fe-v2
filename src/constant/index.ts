@@ -30,7 +30,7 @@ export const handleLogout = () => {
 
 export const getLinkQRCode = (qrCode: string) => {
   if (qrCode) {
-    return `https://datn-mquickb-fe-v2.vercel.app/customer/${qrCode}`
+    return `${process.env.NEXT_PUBLIC_APP_URL}/customer/${qrCode}`
   }
   return "-"
 }
