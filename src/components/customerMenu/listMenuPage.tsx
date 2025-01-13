@@ -8,6 +8,8 @@ import { convertDataMenuCustomer } from './const';
 import { convertMoney } from '@/constant/until';
 import { postDataOrderItemsByCustomer } from '@/api/order';
 import { useRouter } from 'next/navigation';
+import MenuCustomerDetailModal from './menuCustomerDetailModal';
+import { DataFrom } from '@/lib/interface';
 
 interface MenuCustomer {
     id: any;
@@ -23,6 +25,28 @@ interface MenuCustomer {
 const ListMenuPage = () => {
     const [menuList, setMenuList] = useState<MenuCustomer[]>([]);
     const router = useRouter();
+    const [isShowDetail, setIsShowDetail] = useState(false)
+    const [dataFrom, setDataFrom] = useState<DataFrom>({
+        mode: "detail",
+        data: {}
+    })
+
+    const handleCancelModalDetail = () => {
+        setIsShowDetail(false)
+    }
+
+    const handleOkModalDetail = () => {
+        setIsShowDetail(false)
+    }
+
+        const handleShowModal = (mode: string, item: any) => {
+            setIsShowDetail(true)
+            const data: DataFrom = {
+                mode: mode,
+                data: item
+            }
+            setDataFrom(data)
+        }
 
     const handleDecrease = (id: any, quantity: any) => {
         if (quantity < 0) return;
@@ -104,7 +128,7 @@ const ListMenuPage = () => {
                             <div className='flex justify-between mb-3 pr-2' key={index}>
                                 <div className='flex'>
                                     <div>{index + 1} &nbsp;&nbsp;</div>
-                                    <div className='h-[100px] mr-1'>
+                                    <div className='h-[100px] mr-1 cursor-pointer' onClick={() => { handleShowModal("view", item) }}>
                                         <Image src={item.image_link} alt="" width={100} height={100} />
                                     </div>
                                     <div className='flex flex-col justify-between'>
@@ -125,6 +149,7 @@ const ListMenuPage = () => {
                 </div>
                 <div className='flex bg-[#fff] cursor-pointer text-[#000816] rounded-[12px] py-2 px-4 justify-between hover:opacity-80' onClick={() => { handleOrder() }}> <div>Đặt hàng - {totaldish()} món</div> <div>{totalMoney()} đ</div></div>
             </div >
+            {isShowDetail ? (<MenuCustomerDetailModal isModalOpen={isShowDetail} dataFrom={dataFrom} handleCancel={handleCancelModalDetail} handleOk={handleOkModalDetail}></MenuCustomerDetailModal>) : null}
         </>
     );
 };
