@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-const MenuDetailModal: React.FC<{
+const MenuCustomerDetailModal: React.FC<{
   isModalOpen: boolean;
   dataFrom: DataFrom
   handleCancel: () => void;
@@ -19,15 +19,13 @@ const MenuDetailModal: React.FC<{
 
   return (
     <>
-      <Modal title="Chi tiết món ăn" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Modal title="Chi tiết món ăn" centered open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} width={350}>
         <div className='flex justify-between mt-5'>
-          <div className="order-details w-[350px]">
-            <p className='mb-3'><strong>Mã: </strong> {itemData?.id ? itemData?.id : "--"}</p>
+          <div className="order-details w-[180px]">
+            <p className='mb-3'><strong>Mã món ăn: </strong> {itemData?.id ? itemData?.id : "--"}</p>
             <p className='mb-3'><strong>Tên món: </strong> {itemData?.name ? itemData?.name : "--"}</p>
             <p className='mb-3'><strong>Miêu tả: </strong> {itemData?.description ? itemData?.description : "--"}</p>
             <p className='mb-3'><strong>Loại món: </strong> {itemData?.category ? itemData?.category : "--"}</p>
-            <p className='mb-3'><strong>Trạng thái: </strong> {itemData?.is_available ? "Hoạt động" : "Không hoạt động"}</p>
-            <p className='mb-3'><strong>Thời gian cập nhật: </strong> {itemData?.created_at ? moment(itemData?.created_at).format("DD-MM-YYYY") : "--"} </p>
           </div>
           <div className='flex flex-col items-center text-center'>
             <p><strong>Ảnh:</strong> {itemData?.image_link ? (<Image src={itemData?.image_link} alt="My Image" width={120} height={120} />) : null}</p>
@@ -39,4 +37,4 @@ const MenuDetailModal: React.FC<{
   );
 };
 
-export default MenuDetailModal;
+export default MenuCustomerDetailModal;
